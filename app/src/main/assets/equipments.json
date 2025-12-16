@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "name": "Pompe à chaleur",
+    "brand": "Daikin",
+    "model": "VRV-4",
+    "serialNumber": "DAI-2023-001",
+    "local": "Bâtiment A",
+    "level": "",
+    "type": "0"
+  },
+  {
+    "id": "2",
+    "name": "Ascenseur",
+    "brand": "Otis",
+    "model": "Gen2",
+    "serialNumber": "OTI-2022-045",
+    "local": "Bâtiment B",
+    "level": "Étage 1",
+    "type": "0"
+  },
+  {
+    "id": "3",
+    "name": "Chaudière",
+    "brand": "Viessmann",
+    "model": "Vitodens 200-W",
+    "serialNumber": "VIE-2023-123",
+    "local": "Bâtiment A",
+    "level": "Sous-sol",
+    "type": "1"
+  },
+  {
+    "id": "4",
+    "name": "Ventilation mécanique",
+    "brand": "Aldes",
+    "model": "VMC Simple Flux",
+    "serialNumber": "ALD-2021-078",
+    "local": "Bâtiment C",
+    "level": "Étage 3",
+    "type": "1"
+  },
+  {
+    "id": "5",
+    "name": "test",
+    "brand": "Dorma",
+    "model": "TSA 160",
+    "serialNumber": "DOR-2022-234",
+    "local": "Bâtiment B - Rez-de-chaussée",
+    "level": "",
+    "type": "2"
+  }
+]
