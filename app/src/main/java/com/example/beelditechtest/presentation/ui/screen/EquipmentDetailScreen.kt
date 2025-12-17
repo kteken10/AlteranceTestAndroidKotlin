@@ -159,13 +159,50 @@ private fun EquipmentDetailContent(
 
     Column(
         modifier = modifier
-            .verticalScroll(scrollState)
-            .padding(horizontal = 16.dp),
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        // Header Card avec image et infos principales
+        // Image de l'équipement dans une carte blanche
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(top = 8.dp),
+            shape = RoundedCornerShape(20.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(220.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                if (imageBitmap != null) {
+                    Image(
+                        bitmap = imageBitmap,
+                        contentDescription = equipment.name,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(20.dp)),
+                        contentScale = ContentScale.Crop,
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_equipment),
+                        contentDescription = equipment.name,
+                        modifier = Modifier.size(80.dp),
+                        tint = Color(0xFF6B7280),
+                    )
+                }
+            }
+        }
+
+        // Header Card avec infos principales
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             shape = RoundedCornerShape(20.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
@@ -174,33 +211,6 @@ private fun EquipmentDetailContent(
                 modifier = Modifier.padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                // Image de l'équipement
-                Box(
-                    modifier = Modifier
-                        .size(120.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(screenBackground),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    if (imageBitmap != null) {
-                        Image(
-                            bitmap = imageBitmap,
-                            contentDescription = equipment.name,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Crop,
-                        )
-                    } else {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_equipment),
-                            contentDescription = equipment.name,
-                            modifier = Modifier.size(64.dp),
-                            tint = Color(0xFF6B7280),
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
                 // Nom de l'équipement
                 Text(
                     text = equipment.name,
@@ -259,6 +269,7 @@ private fun EquipmentDetailContent(
         DetailSection(
             title = "Informations générales",
             icon = R.drawable.ic_equipment,
+            modifier = Modifier.padding(horizontal = 16.dp),
         ) {
             DetailInfoRow(label = "Marque", value = equipment.brand)
             DetailInfoRow(label = "Modèle", value = equipment.model)
@@ -270,6 +281,7 @@ private fun EquipmentDetailContent(
         DetailSection(
             title = "Localisation",
             icon = R.drawable.ic_building,
+            modifier = Modifier.padding(horizontal = 16.dp),
         ) {
             DetailInfoRow(label = "Bâtiment", value = equipment.buildingId)
             DetailInfoRow(label = "Étage", value = equipment.floor.ifEmpty { "Non renseigné" })
@@ -279,6 +291,7 @@ private fun EquipmentDetailContent(
         DetailSection(
             title = "État technique",
             icon = R.drawable.ic_defect,
+            modifier = Modifier.padding(horizontal = 16.dp),
         ) {
             DetailInfoRow(
                 label = "Statut",
@@ -312,10 +325,11 @@ private fun EquipmentDetailContent(
 private fun DetailSection(
     title: String,
     icon: Int,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
