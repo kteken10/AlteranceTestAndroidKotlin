@@ -1,5 +1,7 @@
 package com.example.beelditechtest.domain.model
 
+import com.example.beelditechtest.domain.model.EquipmentStatus
+
 /**
  * Statistiques calculées dynamiquement pour un ensemble d'équipements
  * Ces données ne sont PAS stockées mais calculées à la demande

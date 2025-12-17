@@ -1,5 +1,7 @@
 package com.example.beelditechtest.domain.model
 
+import com.example.beelditechtest.domain.model.EquipmentStatus
+
 /**
  * Équipement technique appartenant à un bâtiment
  */
