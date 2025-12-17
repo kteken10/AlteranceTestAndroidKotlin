@@ -5,15 +5,18 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,6 +37,7 @@ import com.example.beelditechtest.domain.model.Equipment
 fun EquipmentItem(
     equipment: Equipment,
     onClick: () -> Unit,
+    onEditClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -66,19 +70,20 @@ fun EquipmentItem(
             color = Color.White,
         ),
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            // Image ou icône par défaut
-            if (imageBitmap != null) {
-                Image(
-                    bitmap = imageBitmap,
-                    contentDescription = equipment.name,
-                    modifier = Modifier
+        Box {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                // Image ou icône par défaut
+                if (imageBitmap != null) {
+                    Image(
+                        bitmap = imageBitmap,
+                        contentDescription = equipment.name,
+                        modifier = Modifier
                         .size(56.dp)
                         .clip(RoundedCornerShape(8.dp)),
                     contentScale = ContentScale.Crop,
@@ -108,10 +113,34 @@ fun EquipmentItem(
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-                Text(
-                    text = "S/N: ${equipment.serialNumber}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = "S/N: ${equipment.serialNumber}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    StatusTag(status = equipment.status)
+                }
+            }
+        }
+
+            // Icône d'édition en haut à droite
+            IconButton(
+                onClick = onEditClick,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(4.dp)
+                    .size(32.dp),
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_edit),
+                    contentDescription = "Modifier l'équipement",
+                    modifier = Modifier.size(16.dp),
+                    tint = Color(0xFF9E9E9E),
                 )
             }
         }
