@@ -2,15 +2,16 @@ package com.example.beelditechtest.presentation.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -27,6 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.beelditechtest.R
 import com.example.beelditechtest.presentation.ui.component.EquipmentItem
 import com.example.beelditechtest.presentation.ui.component.EquipmentListTopAppBar
 import com.example.beelditechtest.presentation.viewmodel.EquipmentListViewModel
@@ -48,55 +51,11 @@ fun EquipmentListScreen(
         containerColor = screenBackground,
         modifier = modifier,
     ) { paddingValues ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
         ) {
-            // Titre Dashboard
-            Text(
-                text = "Dashboard",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, top = 16.dp, bottom = 8.dp),
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-            )
-
-            // KPI Cards
-            state.parkStats?.let { stats ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState())
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    KpiCard(
-                        title = "Total équipements",
-                        value = stats.equipmentStats.total.toString(),
-                        icon = painterResource(id = R.drawable.ic_equipment),
-                    )
-                    KpiCard(
-                        title = "Conformes",
-                        value = stats.equipmentStats.okCount.toString(),
-                        icon = painterResource(id = R.drawable.ic_validated),
-                    )
-                    KpiCard(
-                        title = "À compléter",
-                        value = stats.equipmentStats.toCompleteCount.toString(),
-                        icon = painterResource(id = R.drawable.ic_edit),
-                    )
-                    KpiCard(
-                        title = "En défaut",
-                        value = stats.equipmentStats.defectCount.toString(),
-                        icon = painterResource(id = R.drawable.ic_defect),
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
             // Section Équipements avec bouton Ajouter
             Row(
                 modifier = Modifier
@@ -130,7 +89,9 @@ fun EquipmentListScreen(
             }
 
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f),
             ) {
                 when {
                     state.isLoading -> {
