@@ -22,7 +22,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -79,26 +78,22 @@ fun EquipmentListScreen(
                     KpiCard(
                         title = "Total équipements",
                         value = stats.equipmentStats.total.toString(),
-                        icon = painterResource(id = R.drawable.ic_chart),
-                        iconTint = Color(0xFF3B82F6),
+                        icon = painterResource(id = R.drawable.ic_equipment),
                     )
                     KpiCard(
                         title = "Conformes",
                         value = stats.equipmentStats.okCount.toString(),
-                        icon = painterResource(id = R.drawable.ic_check_circle),
-                        iconTint = Color(0xFF10B981),
+                        icon = painterResource(id = R.drawable.ic_validated),
                     )
                     KpiCard(
                         title = "À compléter",
                         value = stats.equipmentStats.toCompleteCount.toString(),
-                        icon = painterResource(id = R.drawable.ic_warning),
-                        iconTint = Color(0xFFF59E0B),
+                        icon = painterResource(id = R.drawable.ic_edit),
                     )
                     KpiCard(
                         title = "En défaut",
                         value = stats.equipmentStats.defectCount.toString(),
-                        icon = painterResource(id = R.drawable.ic_error),
-                        iconTint = Color(0xFFEF4444),
+                        icon = painterResource(id = R.drawable.ic_defect),
                     )
                 }
             }
@@ -134,7 +129,7 @@ fun EquipmentListScreen(
                     else -> {
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
                             items(state.equipments) { equipment ->
                                 EquipmentItem(
