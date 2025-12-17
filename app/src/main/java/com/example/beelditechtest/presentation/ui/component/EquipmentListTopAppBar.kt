@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -22,15 +23,23 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.beelditechtest.R
 import com.example.beelditechtest.ui.theme.screenBackground
+
+// Constants
+private val ICON_CONTAINER_SIZE = 42.dp
+private val ICON_SIZE = 22.dp
+private val AVATAR_DEFAULT_SIZE = 28.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EquipmentListTopAppBar(
     userAvatarResId: Int? = null,
     isDarkTheme: Boolean = false,
+    notificationCount: Int = 0,
     onNotificationClick: () -> Unit = {},
     onThemeToggle: () -> Unit = {},
     onAvatarClick: () -> Unit = {},
@@ -55,7 +64,7 @@ fun EquipmentListTopAppBar(
                 // Icône Notification
                 Box(
                     modifier = Modifier
-                        .size(42.dp)
+                        .size(ICON_CONTAINER_SIZE)
                         .clip(CircleShape)
                         .background(Color.White)
                         .clickable(onClick = onNotificationClick),
@@ -64,9 +73,28 @@ fun EquipmentListTopAppBar(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_notification),
                         contentDescription = "Notifications",
-                        modifier = Modifier.size(22.dp),
+                        modifier = Modifier.size(ICON_SIZE),
                         tint = Color(0xFF0F0F0F),
                     )
+                    
+                    // Badge de notification
+                    if (notificationCount > 0) {
+                        Box(
+                            modifier = Modifier
+                                .size(16.dp)
+                                .clip(CircleShape)
+                                .background(Color.Red)
+                                .align(Alignment.TopEnd),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = if (notificationCount > 9) "9+" else notificationCount.toString(),
+                                color = Color.White,
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
+                    }
                 }
 
                 Spacer(modifier = Modifier.width(12.dp))
@@ -74,7 +102,7 @@ fun EquipmentListTopAppBar(
                 // Icône Thème
                 Box(
                     modifier = Modifier
-                        .size(42.dp)
+                        .size(ICON_CONTAINER_SIZE)
                         .clip(CircleShape)
                         .background(Color.White)
                         .clickable(onClick = onThemeToggle),
@@ -83,7 +111,7 @@ fun EquipmentListTopAppBar(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_theme),
                         contentDescription = if (isDarkTheme) "Thème clair" else "Thème sombre",
-                        modifier = Modifier.size(22.dp),
+                        modifier = Modifier.size(ICON_SIZE),
                         tint = Color(0xFF0F0F0F),
                     )
                 }
@@ -93,9 +121,15 @@ fun EquipmentListTopAppBar(
                 // Avatar Utilisateur
                 Box(
                     modifier = Modifier
-                        .size(42.dp)
+                        .size(ICON_CONTAINER_SIZE)
                         .clip(CircleShape)
-                        .background(Color.White)
+                        .then(
+                            if (userAvatarResId == null) {
+                                Modifier.background(Color.White)
+                            } else {
+                                Modifier
+                            }
+                        )
                         .clickable(onClick = onAvatarClick),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -104,7 +138,7 @@ fun EquipmentListTopAppBar(
                             painter = painterResource(id = userAvatarResId),
                             contentDescription = "Avatar utilisateur",
                             modifier = Modifier
-                                .size(42.dp)
+                                .size(ICON_CONTAINER_SIZE)
                                 .clip(CircleShape),
                             contentScale = ContentScale.Crop,
                         )
@@ -112,7 +146,7 @@ fun EquipmentListTopAppBar(
                         Image(
                             painter = painterResource(id = R.drawable.ic_default_avatar),
                             contentDescription = "Avatar par défaut",
-                            modifier = Modifier.size(28.dp),
+                            modifier = Modifier.size(AVATAR_DEFAULT_SIZE),
                         )
                     }
                 }

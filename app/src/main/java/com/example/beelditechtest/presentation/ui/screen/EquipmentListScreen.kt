@@ -34,7 +34,10 @@ fun EquipmentListScreen(
         topBar = {
             EquipmentListTopAppBar(
                 userAvatarResId = R.drawable.avatar_user,
+                notificationCount = 3, // Sample notification count to demonstrate badge
                 onAvatarClick = { /* TODO: Navigate to profile */ },
+                onNotificationClick = { /* TODO: Navigate to notifications */ },
+                onThemeToggle = { /* TODO: Toggle theme */ },
             )
         },
         containerColor = screenBackground,
