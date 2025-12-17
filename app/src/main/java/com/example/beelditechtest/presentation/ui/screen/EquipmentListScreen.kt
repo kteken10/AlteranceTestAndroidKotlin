@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.beelditechtest.R
 import com.example.beelditechtest.presentation.ui.component.EquipmentItem
 import com.example.beelditechtest.presentation.ui.component.EquipmentListTopAppBar
 import com.example.beelditechtest.presentation.viewmodel.EquipmentListViewModel
@@ -31,7 +32,10 @@ fun EquipmentListScreen(
 
     Scaffold(
         topBar = {
-            EquipmentListTopAppBar()
+            EquipmentListTopAppBar(
+                userAvatarResId = R.drawable.avatar_user,
+                onAvatarClick = { /* TODO: Navigate to profile */ },
+            )
         },
         containerColor = screenBackground,
         modifier = modifier,
