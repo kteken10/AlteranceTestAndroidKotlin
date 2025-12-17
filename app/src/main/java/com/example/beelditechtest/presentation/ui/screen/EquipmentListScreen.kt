@@ -25,6 +25,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +40,7 @@ import com.example.beelditechtest.R
 import com.example.beelditechtest.presentation.ui.component.EquipmentItem
 import com.example.beelditechtest.presentation.ui.component.EquipmentListTopAppBar
 import com.example.beelditechtest.presentation.ui.component.KpiCard
+import com.example.beelditechtest.presentation.ui.component.SearchField
 import com.example.beelditechtest.presentation.viewmodel.EquipmentListViewModel
 import com.example.beelditechtest.ui.theme.primaryColor
 import com.example.beelditechtest.ui.theme.screenBackground
@@ -131,6 +135,16 @@ fun EquipmentListScreen(
                     )
                 }
             }
+
+            // Champ de recherche
+            var searchQuery by remember { mutableStateOf("") }
+            SearchField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                placeholder = "Rechercher un équipement...",
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             Box(
                 modifier = Modifier.fillMaxSize(),
