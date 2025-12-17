@@ -35,7 +35,7 @@ fun EquipmentItem(
         ),
         border = BorderStroke(
             width = 1.dp,
-            color = Color(0xFFE8E8E8),
+            color = Color.White,
         ),
     ) {
         Column(
