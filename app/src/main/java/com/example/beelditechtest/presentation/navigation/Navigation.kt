@@ -37,6 +37,17 @@ fun AppNavigation(
                 onEquipmentClick = { equipmentId ->
                     navController.navigate(Screen.EquipmentDetail.createRoute(equipmentId))
                 },
+                onAvatarClick = {
+                    // TODO: Navigate to user profile
+                },
+                onNotificationClick = {
+                    // TODO: Navigate to notifications
+                },
+                onThemeToggleClick = {
+                    // TODO: Toggle theme
+                },
+                notificationCount = 3, // Default notification count for demo
+                isDarkTheme = false, // Default theme for demo
             )
         }
 

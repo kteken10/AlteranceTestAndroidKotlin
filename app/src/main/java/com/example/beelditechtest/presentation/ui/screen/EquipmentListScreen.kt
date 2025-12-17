@@ -26,12 +26,23 @@ fun EquipmentListScreen(
     viewModel: EquipmentListViewModel,
     onEquipmentClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onAvatarClick: () -> Unit = {},
+    onNotificationClick: () -> Unit = {},
+    onThemeToggleClick: () -> Unit = {},
+    notificationCount: Int = 3,
+    isDarkTheme: Boolean = false,
 ) {
     val state by viewModel.state.collectAsState()
 
     Scaffold(
         topBar = {
-            EquipmentListTopAppBar()
+            EquipmentListTopAppBar(
+                notificationCount = notificationCount,
+                isDarkTheme = isDarkTheme,
+                onAvatarClick = onAvatarClick,
+                onNotificationClick = onNotificationClick,
+                onThemeToggleClick = onThemeToggleClick,
+            )
         },
         containerColor = screenBackground,
         modifier = modifier,
