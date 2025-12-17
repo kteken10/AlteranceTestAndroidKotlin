@@ -12,4 +12,5 @@ val Pink40 = Color(0xFF7D5260)
 
 val cardBackground = Color(0xFFFECD56)
 val error = Color(0xFFEF705D)
-val screenBackground = Color(0xFFF3F5F9) // #f3f5f9
+val screenBackground = Color(0xFFF3F5F9)
+val primaryColor = Color(0xFFFECD56)
