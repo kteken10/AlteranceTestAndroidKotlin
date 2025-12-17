@@ -25,9 +25,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -137,10 +134,9 @@ fun EquipmentListScreen(
             }
 
             // Champ de recherche
-            var searchQuery by remember { mutableStateOf("") }
             SearchField(
-                value = searchQuery,
-                onValueChange = { searchQuery = it },
+                value = state.searchQuery,
+                onValueChange = { viewModel.onSearchQueryChange(it) },
                 placeholder = "Rechercher un équipement...",
             )
 
@@ -162,12 +158,19 @@ fun EquipmentListScreen(
                             color = MaterialTheme.colorScheme.error,
                         )
                     }
+                    state.filteredEquipments.isEmpty() && state.searchQuery.isNotEmpty() -> {
+                        Text(
+                            text = "Aucun équipement trouvé",
+                            modifier = Modifier.align(Alignment.Center),
+                            color = Color.Gray,
+                        )
+                    }
                     else -> {
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
-                            items(state.equipments) { equipment ->
+                            items(state.filteredEquipments) { equipment ->
                                 EquipmentItem(
                                     equipment = equipment,
                                     onClick = { onEquipmentClick(equipment.id) },
