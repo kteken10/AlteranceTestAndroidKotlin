@@ -26,6 +26,12 @@ class EquipmentLocalDataSource(private val context: Context) {
                     brand = jsonObject.getString("brand"),
                     model = jsonObject.getString("model"),
                     serialNumber = jsonObject.getString("serialNumber"),
+                    floor = jsonObject.getString("floor"),
+                    status = jsonObject.getString("status"),
+                    completionRate = jsonObject.getInt("completionRate"),
+                    defectCount = jsonObject.getInt("defectCount"),
+                    updatedAt = jsonObject.getLong("updatedAt"),
+                    buildingId = jsonObject.getString("buildingId"),
                 )
                 equipmentEntities.add(equipmentEntity)
             }
