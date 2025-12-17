@@ -64,17 +64,8 @@ fun EquipmentListScreen(
                 .fillMaxSize()
                 .padding(paddingValues),
         ) {
-            // Titre Dashboard
-            Text(
-                text = "Dashboard",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, top = 16.dp, bottom = 8.dp),
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-            )
+             
 
-            // KPI Cards
             state.parkStats?.let { stats ->
                 Row(
                     modifier = Modifier
@@ -107,7 +98,8 @@ fun EquipmentListScreen(
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-
+              // Titre Dashboard
+           
             // Section Équipements avec bouton Ajouter
             Row(
                 modifier = Modifier
@@ -118,7 +110,7 @@ fun EquipmentListScreen(
             ) {
                 Text(
                     text = "Équipements",
-                    fontSize = 18.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold,
                 )
 
