@@ -24,6 +24,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.beelditechtest.R
+import com.example.beelditechtest.ui.theme.TopAppBarActionSize
+import com.example.beelditechtest.ui.theme.TopAppBarIconSize
+import com.example.beelditechtest.ui.theme.TopAppBarLogoHeight
 import com.example.beelditechtest.ui.theme.screenBackground
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +46,7 @@ fun EquipmentListTopAppBar(
                 contentDescription = "Logo Beeldi",
                 modifier = Modifier
                     .padding(start = 16.dp)
-                    .height(28.dp),
+                    .height(TopAppBarLogoHeight),
             )
         },
         title = { },
@@ -55,7 +58,7 @@ fun EquipmentListTopAppBar(
                 // Icône Notification
                 Box(
                     modifier = Modifier
-                        .size(42.dp)
+                        .size(TopAppBarActionSize)
                         .clip(CircleShape)
                         .background(Color.White)
                         .clickable(onClick = onNotificationClick),
@@ -64,7 +67,7 @@ fun EquipmentListTopAppBar(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_notification),
                         contentDescription = "Notifications",
-                        modifier = Modifier.size(22.dp),
+                        modifier = Modifier.size(TopAppBarIconSize),
                         tint = Color(0xFF0F0F0F),
                     )
                 }
@@ -74,7 +77,7 @@ fun EquipmentListTopAppBar(
                 // Icône Thème
                 Box(
                     modifier = Modifier
-                        .size(42.dp)
+                        .size(TopAppBarActionSize)
                         .clip(CircleShape)
                         .background(Color.White)
                         .clickable(onClick = onThemeToggle),
@@ -83,7 +86,7 @@ fun EquipmentListTopAppBar(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_theme),
                         contentDescription = if (isDarkTheme) "Thème clair" else "Thème sombre",
-                        modifier = Modifier.size(22.dp),
+                        modifier = Modifier.size(TopAppBarIconSize),
                         tint = Color(0xFF0F0F0F),
                     )
                 }
@@ -91,12 +94,17 @@ fun EquipmentListTopAppBar(
                 Spacer(modifier = Modifier.width(12.dp))
 
                 // Avatar Utilisateur
+                val avatarModifier = Modifier
+                    .size(TopAppBarActionSize)
+                    .clip(CircleShape)
+                    .clickable(onClick = onAvatarClick)
+                
                 Box(
-                    modifier = Modifier
-                        .size(42.dp)
-                        .clip(CircleShape)
-                        .background(Color.White)
-                        .clickable(onClick = onAvatarClick),
+                    modifier = if (userAvatarResId == null) {
+                        avatarModifier.background(Color.White)
+                    } else {
+                        avatarModifier
+                    },
                     contentAlignment = Alignment.Center,
                 ) {
                     if (userAvatarResId != null) {
@@ -104,7 +112,7 @@ fun EquipmentListTopAppBar(
                             painter = painterResource(id = userAvatarResId),
                             contentDescription = "Avatar utilisateur",
                             modifier = Modifier
-                                .size(42.dp)
+                                .size(TopAppBarActionSize)
                                 .clip(CircleShape),
                             contentScale = ContentScale.Crop,
                         )
