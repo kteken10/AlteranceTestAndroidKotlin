@@ -17,6 +17,7 @@ fun EquipmentEntity.toDomain(): Equipment {
         defectCount = defectCount,
         updatedAt = updatedAt,
         buildingId = buildingId,
+        imagePath = imagePath,
     )
 }
 

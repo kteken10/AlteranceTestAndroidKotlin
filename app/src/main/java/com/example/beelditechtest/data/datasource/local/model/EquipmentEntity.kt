@@ -12,4 +12,5 @@ data class EquipmentEntity(
     val defectCount: Int,
     val updatedAt: Long,
     val buildingId: String,
+    val imagePath: String? = null,
 )

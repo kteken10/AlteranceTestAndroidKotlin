@@ -10,7 +10,8 @@
     "completionRate": 100,
     "defectCount": 0,
     "updatedAt": 1702800000000,
-    "buildingId": "building-1"
+    "buildingId": "building-1",
+    "imagePath": "images/pompe_chaleur.png"
   },
   {
     "id": "eq-002",
@@ -23,7 +24,8 @@
     "completionRate": 100,
     "defectCount": 0,
     "updatedAt": 1702750000000,
-    "buildingId": "building-1"
+    "buildingId": "building-1",
+    "imagePath": "images/ascenseur.png"
   },
   {
     "id": "eq-003",
@@ -36,7 +38,8 @@
     "completionRate": 65,
     "defectCount": 0,
     "updatedAt": 1702700000000,
-    "buildingId": "building-1"
+    "buildingId": "building-1",
+    "imagePath": "images/chaudiere.png"
   },
   {
     "id": "eq-004",
@@ -49,7 +52,8 @@
     "completionRate": 80,
     "defectCount": 2,
     "updatedAt": 1702650000000,
-    "buildingId": "building-2"
+    "buildingId": "building-2",
+    "imagePath": "images/groupe_electrogene.png"
   },
   {
     "id": "eq-005",
@@ -62,7 +66,22 @@
     "completionRate": 100,
     "defectCount": 0,
     "updatedAt": 1702600000000,
-    "buildingId": "building-2"
+    "buildingId": "building-2",
+    "imagePath": "images/climatisation.png"
+  },
+   {
+    "id": "eq-009",
+    "name": "Système incendie",
+    "brand": "Siemens",
+    "model": "Sinteso",
+    "serialNumber": "SIE-2023-067",
+    "floor": "Tous étages",
+    "status": "TO_COMPLETE",
+    "completionRate": 55,
+    "defectCount": 0,
+    "updatedAt": 1702400000000,
+    "buildingId": "building-1",
+    "imagePath": "images/systeme_incendie.png"
   },
   {
     "id": "eq-006",
@@ -75,7 +94,8 @@
     "completionRate": 45,
     "defectCount": 0,
     "updatedAt": 1702550000000,
-    "buildingId": "building-2"
+    "buildingId": "building-2",
+    "imagePath": "images/toiture_terrasse.png"
   },
   {
     "id": "eq-007",
@@ -103,19 +123,7 @@
     "updatedAt": 1702450000000,
     "buildingId": "building-3"
   },
-  {
-    "id": "eq-009",
-    "name": "Système incendie",
-    "brand": "Siemens",
-    "model": "Sinteso",
-    "serialNumber": "SIE-2023-067",
-    "floor": "Tous étages",
-    "status": "TO_COMPLETE",
-    "completionRate": 55,
-    "defectCount": 0,
-    "updatedAt": 1702400000000,
-    "buildingId": "building-1"
-  },
+ 
   {
     "id": "eq-010",
     "name": "Portes automatiques",

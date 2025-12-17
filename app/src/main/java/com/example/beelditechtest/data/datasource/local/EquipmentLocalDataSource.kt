@@ -32,6 +32,7 @@ class EquipmentLocalDataSource(private val context: Context) {
                     defectCount = jsonObject.getInt("defectCount"),
                     updatedAt = jsonObject.getLong("updatedAt"),
                     buildingId = jsonObject.getString("buildingId"),
+                    imagePath = if (jsonObject.has("imagePath")) jsonObject.getString("imagePath") else null,
                 )
                 equipmentEntities.add(equipmentEntity)
             }
