@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.beelditechtest.R
 import com.example.beelditechtest.ui.theme.error
+import com.example.beelditechtest.ui.theme.iconColor
 import com.example.beelditechtest.ui.theme.screenBackground
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,7 +60,7 @@ fun EquipmentListTopAppBar(
                         painter = painterResource(id = R.drawable.ic_notifications),
                         contentDescription = "Notifications",
                         modifier = Modifier.size(24.dp),
-                        tint = Color(0xFF0F0F0F)
+                        tint = iconColor
                     )
                 }
                 
@@ -92,16 +93,16 @@ fun EquipmentListTopAppBar(
                     painter = painterResource(
                         id = if (isDarkTheme) R.drawable.ic_dark_mode else R.drawable.ic_light_mode
                     ),
-                    contentDescription = "Basculer le thème",
+                    contentDescription = "Toggle theme",
                     modifier = Modifier.size(24.dp),
-                    tint = Color(0xFF0F0F0F)
+                    tint = iconColor
                 )
             }
             
             // User avatar
             Image(
                 painter = painterResource(id = R.drawable.ic_user_avatar),
-                contentDescription = "Avatar utilisateur",
+                contentDescription = "User avatar",
                 modifier = Modifier
                     .padding(end = 16.dp)
                     .size(40.dp)
