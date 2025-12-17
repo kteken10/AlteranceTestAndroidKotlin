@@ -38,6 +38,7 @@ fun EquipmentItem(
     equipment: Equipment,
     onClick: () -> Unit,
     onEditClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -128,20 +129,34 @@ fun EquipmentItem(
             }
         }
 
-            // Icône d'édition en haut à droite
-            IconButton(
-                onClick = onEditClick,
+            // Icônes d'action en haut à droite
+            Row(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(4.dp)
-                    .size(32.dp),
+                    .padding(4.dp),
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_edit),
-                    contentDescription = "Modifier l'équipement",
-                    modifier = Modifier.size(16.dp),
-                    tint = Color(0xFF9E9E9E),
-                )
+                IconButton(
+                    onClick = onEditClick,
+                    modifier = Modifier.size(32.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_edit),
+                        contentDescription = "Modifier l'équipement",
+                        modifier = Modifier.size(16.dp),
+                        tint = Color(0xFF9E9E9E),
+                    )
+                }
+                IconButton(
+                    onClick = onDeleteClick,
+                    modifier = Modifier.size(32.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_delete),
+                        contentDescription = "Supprimer l'équipement",
+                        modifier = Modifier.size(16.dp),
+                        tint = Color(0xFFF44336).copy(alpha = 0.7f),
+                    )
+                }
             }
         }
     }

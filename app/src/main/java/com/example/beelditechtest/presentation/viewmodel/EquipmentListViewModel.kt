@@ -2,6 +2,8 @@ package com.example.beelditechtest.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.beelditechtest.domain.model.Equipment
+import com.example.beelditechtest.domain.usecase.DeleteEquipmentUseCase
 import com.example.beelditechtest.domain.usecase.GetEquipmentsUseCase
 import com.example.beelditechtest.domain.usecase.GetParkStatsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +17,7 @@ import javax.inject.Inject
 class EquipmentListViewModel @Inject constructor(
     private val getEquipmentsUseCase: GetEquipmentsUseCase,
     private val getParkStatsUseCase: GetParkStatsUseCase,
+    private val deleteEquipmentUseCase: DeleteEquipmentUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(EquipmentListState())
@@ -53,10 +56,73 @@ class EquipmentListViewModel @Inject constructor(
         )
     }
 
+    fun openBottomSheetForCreate() {
+        _state.value = _state.value.copy(
+            isBottomSheetOpen = true,
+            selectedEquipment = null,
+        )
+    }
+
+    fun openBottomSheetForEdit(equipment: Equipment) {
+        _state.value = _state.value.copy(
+            isBottomSheetOpen = true,
+            selectedEquipment = equipment,
+        )
+    }
+
+    fun closeBottomSheet() {
+        _state.value = _state.value.copy(
+            isBottomSheetOpen = false,
+            selectedEquipment = null,
+        )
+    }
+
+    fun onEquipmentSaved() {
+        closeBottomSheet()
+        loadData()
+    }
+
+    fun onEquipmentDeleted() {
+        closeBottomSheet()
+        loadData()
+    }
+
+    fun showDeleteConfirmation(equipment: Equipment) {
+        _state.value = _state.value.copy(
+            showDeleteConfirmation = true,
+            equipmentToDelete = equipment,
+        )
+    }
+
+    fun hideDeleteConfirmation() {
+        _state.value = _state.value.copy(
+            showDeleteConfirmation = false,
+            equipmentToDelete = null,
+        )
+    }
+
+    fun confirmDelete() {
+        val equipment = _state.value.equipmentToDelete ?: return
+        viewModelScope.launch {
+            deleteEquipmentUseCase(equipment.id).fold(
+                onSuccess = {
+                    hideDeleteConfirmation()
+                    loadData()
+                },
+                onFailure = {
+                    hideDeleteConfirmation()
+                    _state.value = _state.value.copy(
+                        error = it.message ?: "Erreur lors de la suppression",
+                    )
+                },
+            )
+        }
+    }
+
     private fun filterEquipments(
-        equipments: List<com.example.beelditechtest.domain.model.Equipment>,
+        equipments: List<Equipment>,
         query: String,
-    ): List<com.example.beelditechtest.domain.model.Equipment> {
+    ): List<Equipment> {
         if (query.isBlank()) return equipments
         val lowerQuery = query.lowercase().trim()
         return equipments.filter { equipment ->

@@ -10,4 +10,8 @@ data class EquipmentListState(
     val parkStats: ParkStats? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
+    val isBottomSheetOpen: Boolean = false,
+    val selectedEquipment: Equipment? = null,
+    val showDeleteConfirmation: Boolean = false,
+    val equipmentToDelete: Equipment? = null,
 )

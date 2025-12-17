@@ -7,12 +7,15 @@ import com.example.beelditechtest.data.repository.BuildingRepositoryImpl
 import com.example.beelditechtest.data.repository.EquipmentRepositoryImpl
 import com.example.beelditechtest.domain.repository.BuildingRepository
 import com.example.beelditechtest.domain.repository.EquipmentRepository
+import com.example.beelditechtest.domain.usecase.CreateEquipmentUseCase
+import com.example.beelditechtest.domain.usecase.DeleteEquipmentUseCase
 import com.example.beelditechtest.domain.usecase.GetBuildingsUseCase
 import com.example.beelditechtest.domain.usecase.GetBuildingsWithStatsUseCase
 import com.example.beelditechtest.domain.usecase.GetEquipmentByIdUseCase
 import com.example.beelditechtest.domain.usecase.GetEquipmentsUseCase
 import com.example.beelditechtest.domain.usecase.GetFilteredEquipmentsUseCase
 import com.example.beelditechtest.domain.usecase.GetParkStatsUseCase
+import com.example.beelditechtest.domain.usecase.UpdateEquipmentUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -108,5 +111,29 @@ object AppModule {
         equipmentRepository: EquipmentRepository,
     ): GetParkStatsUseCase {
         return GetParkStatsUseCase(buildingRepository, equipmentRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCreateEquipmentUseCase(
+        repository: EquipmentRepository,
+    ): CreateEquipmentUseCase {
+        return CreateEquipmentUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateEquipmentUseCase(
+        repository: EquipmentRepository,
+    ): UpdateEquipmentUseCase {
+        return UpdateEquipmentUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteEquipmentUseCase(
+        repository: EquipmentRepository,
+    ): DeleteEquipmentUseCase {
+        return DeleteEquipmentUseCase(repository)
     }
 }

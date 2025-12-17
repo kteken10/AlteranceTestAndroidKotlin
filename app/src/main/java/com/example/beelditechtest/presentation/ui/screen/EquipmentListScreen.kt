@@ -17,14 +17,22 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,22 +41,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.beelditechtest.R
+import com.example.beelditechtest.presentation.ui.component.EquipmentFormBottomSheet
 import com.example.beelditechtest.presentation.ui.component.EquipmentItem
 import com.example.beelditechtest.presentation.ui.component.EquipmentListTopAppBar
 import com.example.beelditechtest.presentation.ui.component.KpiCard
 import com.example.beelditechtest.presentation.ui.component.SearchField
+import com.example.beelditechtest.presentation.viewmodel.EquipmentFormViewModel
 import com.example.beelditechtest.presentation.viewmodel.EquipmentListViewModel
 import com.example.beelditechtest.ui.theme.primaryColor
 import com.example.beelditechtest.ui.theme.screenBackground
+import kotlinx.coroutines.launch
 
 @Composable
 fun EquipmentListScreen(
     viewModel: EquipmentListViewModel,
     onEquipmentClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    formViewModel: EquipmentFormViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -56,6 +71,15 @@ fun EquipmentListScreen(
                 userAvatarResId = R.drawable.avatar_user,
                 onAvatarClick = { /* TODO: Navigate to profile */ },
             )
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState) { data ->
+                Snackbar(
+                    snackbarData = data,
+                    containerColor = primaryColor,
+                    contentColor = Color.Black,
+                )
+            }
         },
         containerColor = screenBackground,
         modifier = modifier,
@@ -121,7 +145,7 @@ fun EquipmentListScreen(
                         .size(42.dp)
                         .clip(CircleShape)
                         .background(primaryColor)
-                        .clickable { /* TODO: Navigate to add equipment */ },
+                        .clickable { viewModel.openBottomSheetForCreate() },
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
@@ -174,6 +198,8 @@ fun EquipmentListScreen(
                                 EquipmentItem(
                                     equipment = equipment,
                                     onClick = { onEquipmentClick(equipment.id) },
+                                    onEditClick = { viewModel.openBottomSheetForEdit(equipment) },
+                                    onDeleteClick = { viewModel.showDeleteConfirmation(equipment) },
                                 )
                             }
                         }
@@ -181,5 +207,58 @@ fun EquipmentListScreen(
                 }
             }
         }
+    }
+
+    // BottomSheet pour créer/éditer un équipement
+    if (state.isBottomSheetOpen) {
+        val isEditMode = state.selectedEquipment != null
+        EquipmentFormBottomSheet(
+            viewModel = formViewModel,
+            equipment = state.selectedEquipment,
+            onDismiss = { viewModel.closeBottomSheet() },
+            onSaved = {
+                viewModel.onEquipmentSaved()
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = if (isEditMode) "✅ Équipement mis à jour avec succès" else "✅ Équipement ajouté avec succès",
+                    )
+                }
+            },
+        )
+    }
+
+    // Dialog de confirmation de suppression
+    if (state.showDeleteConfirmation) {
+        AlertDialog(
+            onDismissRequest = { viewModel.hideDeleteConfirmation() },
+            title = { Text("Confirmer la suppression") },
+            text = {
+                Text(
+                    "Êtes-vous sûr de vouloir supprimer l'équipement \"${state.equipmentToDelete?.name}\" ? Cette action est irréversible."
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.confirmDelete()
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = "🗑️ Équipement supprimé avec succès",
+                            )
+                        }
+                    },
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = Color(0xFFF44336),
+                    ),
+                ) {
+                    Text("Supprimer")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { viewModel.hideDeleteConfirmation() }) {
+                    Text("Annuler")
+                }
+            },
+        )
     }
 }
