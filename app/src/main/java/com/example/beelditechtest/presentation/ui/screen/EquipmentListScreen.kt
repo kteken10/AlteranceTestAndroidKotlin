@@ -116,7 +116,7 @@ fun EquipmentListScreen(
                                     equipment = equipment,
                                     onClick = { onEquipmentClick(equipment.id) },
                                 )
-                            }
+                            }w
                         }
                     }
                 }
