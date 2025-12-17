@@ -29,6 +29,8 @@ class EquipmentListViewModel @Inject constructor(
                 val equipments = getEquipmentsUseCase()
                 _state.value = _state.value.copy(
                     equipments = equipments,
+                    filteredEquipments = filterEquipments(equipments, _state.value.searchQuery),
+                    parkStats = parkStats,
                     isLoading = false,
                     error = null,
                 )
@@ -38,6 +40,28 @@ class EquipmentListViewModel @Inject constructor(
                     error = e.message ?: "Erreur inconnue",
                 )
             }
+        }
+    }
+
+    fun onSearchQueryChange(query: String) {
+        _state.value = _state.value.copy(
+            searchQuery = query,
+            filteredEquipments = filterEquipments(_state.value.equipments, query),
+        )
+    }
+
+    private fun filterEquipments(
+        equipments: List<com.example.beelditechtest.domain.model.Equipment>,
+        query: String,
+    ): List<com.example.beelditechtest.domain.model.Equipment> {
+        if (query.isBlank()) return equipments
+        val lowerQuery = query.lowercase().trim()
+        return equipments.filter { equipment ->
+            equipment.name.lowercase().contains(lowerQuery) ||
+                equipment.brand.lowercase().contains(lowerQuery) ||
+                equipment.model.lowercase().contains(lowerQuery) ||
+                equipment.serialNumber.lowercase().contains(lowerQuery) ||
+                equipment.floor.lowercase().contains(lowerQuery)
         }
     }
 }

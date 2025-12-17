@@ -37,6 +37,7 @@ import com.example.beelditechtest.R
 import com.example.beelditechtest.presentation.ui.component.EquipmentItem
 import com.example.beelditechtest.presentation.ui.component.EquipmentListTopAppBar
 import com.example.beelditechtest.presentation.ui.component.KpiCard
+import com.example.beelditechtest.presentation.ui.component.SearchField
 import com.example.beelditechtest.presentation.viewmodel.EquipmentListViewModel
 import com.example.beelditechtest.ui.theme.primaryColor
 import com.example.beelditechtest.ui.theme.screenBackground
@@ -132,6 +133,15 @@ fun EquipmentListScreen(
                 }
             }
 
+            // Champ de recherche
+            SearchField(
+                value = state.searchQuery,
+                onValueChange = { viewModel.onSearchQueryChange(it) },
+                placeholder = "Rechercher un équipement...",
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             Box(
                 modifier = Modifier.fillMaxSize(),
             ) {
@@ -148,12 +158,19 @@ fun EquipmentListScreen(
                             color = MaterialTheme.colorScheme.error,
                         )
                     }
+                    state.filteredEquipments.isEmpty() && state.searchQuery.isNotEmpty() -> {
+                        Text(
+                            text = "Aucun équipement trouvé",
+                            modifier = Modifier.align(Alignment.Center),
+                            color = Color.Gray,
+                        )
+                    }
                     else -> {
                         LazyColumn(
                             modifier = Modifier.fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
-                            items(state.equipments) { equipment ->
+                            items(state.filteredEquipments) { equipment ->
                                 EquipmentItem(
                                     equipment = equipment,
                                     onClick = { onEquipmentClick(equipment.id) },

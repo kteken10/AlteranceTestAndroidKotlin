@@ -4,6 +4,9 @@ import com.example.beelditechtest.domain.model.Equipment
 
 data class EquipmentListState(
     val equipments: List<Equipment> = emptyList(),
+    val filteredEquipments: List<Equipment> = emptyList(),
+    val searchQuery: String = "",
+    val parkStats: ParkStats? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
 )
