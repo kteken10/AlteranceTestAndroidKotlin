@@ -29,7 +29,7 @@ fun KpiCard(
     Card(
         modifier = modifier
             .width(260.dp)
-            .height(120.dp)
+            .height(110.dp)
             .border(
                 width = 1.dp,
                 color = Color.White,
@@ -51,7 +51,7 @@ fun KpiCard(
             // Icône circulaire avec fond noir
             Box(
                 modifier = Modifier
-                    .size(56.dp)
+                    .size(36.dp)
                     .background(
                         color = Color(0xFF0F0F0F),
                         shape = CircleShape
@@ -61,7 +61,7 @@ fun KpiCard(
                 Icon(
                     painter = icon,
                     contentDescription = null,
-                    modifier = Modifier.size(28.dp),
+                    modifier = Modifier.size(22.dp),
                     tint = primaryColor,
                 )
             }
@@ -72,13 +72,13 @@ fun KpiCard(
             ) {
                 Text(
                     text = title,
-                    fontSize = 14.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color(0xFF6B7280),
                 )
                 Text(
                     text = value,
-                    fontSize = 32.sp,
+                    fontSize = 40.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF111827),
                     letterSpacing = (-0.5).sp

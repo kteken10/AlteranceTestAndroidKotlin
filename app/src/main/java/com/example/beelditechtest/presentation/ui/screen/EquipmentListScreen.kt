@@ -2,16 +2,20 @@ package com.example.beelditechtest.presentation.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -32,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import com.example.beelditechtest.R
 import com.example.beelditechtest.presentation.ui.component.EquipmentItem
 import com.example.beelditechtest.presentation.ui.component.EquipmentListTopAppBar
+import com.example.beelditechtest.presentation.ui.component.KpiCard
 import com.example.beelditechtest.presentation.viewmodel.EquipmentListViewModel
 import com.example.beelditechtest.ui.theme.primaryColor
 import com.example.beelditechtest.ui.theme.screenBackground
@@ -46,7 +51,10 @@ fun EquipmentListScreen(
 
     Scaffold(
         topBar = {
-            EquipmentListTopAppBar()
+            EquipmentListTopAppBar(
+                userAvatarResId = R.drawable.avatar_user,
+                onAvatarClick = { /* TODO: Navigate to profile */ },
+            )
         },
         containerColor = screenBackground,
         modifier = modifier,
@@ -56,6 +64,42 @@ fun EquipmentListScreen(
                 .fillMaxSize()
                 .padding(paddingValues),
         ) {
+             
+
+            state.parkStats?.let { stats ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState())
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    KpiCard(
+                        title = "Total équipements",
+                        value = stats.equipmentStats.total.toString(),
+                        icon = painterResource(id = R.drawable.ic_equipment),
+                    )
+                    KpiCard(
+                        title = "Conformes",
+                        value = stats.equipmentStats.okCount.toString(),
+                        icon = painterResource(id = R.drawable.ic_validated),
+                    )
+                    KpiCard(
+                        title = "À compléter",
+                        value = stats.equipmentStats.toCompleteCount.toString(),
+                        icon = painterResource(id = R.drawable.ic_edit),
+                    )
+                    KpiCard(
+                        title = "En défaut",
+                        value = stats.equipmentStats.defectCount.toString(),
+                        icon = painterResource(id = R.drawable.ic_defect),
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+              // Titre Dashboard
+           
             // Section Équipements avec bouton Ajouter
             Row(
                 modifier = Modifier
@@ -66,7 +110,7 @@ fun EquipmentListScreen(
             ) {
                 Text(
                     text = "Équipements",
-                    fontSize = 18.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.SemiBold,
                 )
 
@@ -89,9 +133,7 @@ fun EquipmentListScreen(
             }
 
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f),
+                modifier = Modifier.fillMaxSize(),
             ) {
                 when {
                     state.isLoading -> {
@@ -116,12 +158,11 @@ fun EquipmentListScreen(
                                     equipment = equipment,
                                     onClick = { onEquipmentClick(equipment.id) },
                                 )
-                            }w
+                            }
                         }
                     }
                 }
             }
         }
     }
-
 }
