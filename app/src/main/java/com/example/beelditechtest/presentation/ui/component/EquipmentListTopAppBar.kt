@@ -24,7 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.beelditechtest.R
-import com.example.beelditechtest.ui.theme.screenBackground
+import androidx.compose.material3.MaterialTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +57,7 @@ fun EquipmentListTopAppBar(
                     modifier = Modifier
                         .size(42.dp)
                         .clip(CircleShape)
-                        .background(Color.White)
+                        .background(MaterialTheme.colorScheme.surface)
                         .clickable(onClick = onNotificationClick),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -119,7 +119,7 @@ fun EquipmentListTopAppBar(
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = screenBackground,
+            containerColor = MaterialTheme.colorScheme.surface,
         ),
         modifier = modifier,
     )

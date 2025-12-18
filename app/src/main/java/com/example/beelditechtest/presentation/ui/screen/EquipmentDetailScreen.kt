@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,7 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme  // ← AJOUTER CET IMPORT
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -53,8 +52,7 @@ import com.example.beelditechtest.domain.model.Equipment
 import com.example.beelditechtest.domain.model.EquipmentStatus
 import com.example.beelditechtest.presentation.ui.component.StatusTag
 import com.example.beelditechtest.presentation.viewmodel.EquipmentDetailViewModel
-import com.example.beelditechtest.ui.theme.primaryColor
-import com.example.beelditechtest.ui.theme.screenBackground
+
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -88,11 +86,11 @@ fun EquipmentDetailScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = screenBackground,
+                    containerColor = Color(0xFFF5F5F5),
                 ),
             )
         },
-        containerColor = screenBackground,
+        containerColor = Color(0xFFF5F5F5),
         modifier = modifier,
     ) { paddingValues ->
         Box(
@@ -104,7 +102,7 @@ fun EquipmentDetailScreen(
                 state.isLoading -> {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center),
-                        color = primaryColor,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                 }
                 state.error != null -> {
@@ -345,14 +343,14 @@ private fun DetailSection(
                 Box(
                     modifier = Modifier
                         .size(32.dp)
-                        .background(Color(0xFF0F0F0F), CircleShape),
+                        .background(Color(0xFFF3F4F6), CircleShape),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
                         painter = painterResource(id = icon),
                         contentDescription = null,
                         modifier = Modifier.size(18.dp),
-                        tint = primaryColor,
+                        tint = Color(0xFF111827),
                     )
                 }
                 Text(

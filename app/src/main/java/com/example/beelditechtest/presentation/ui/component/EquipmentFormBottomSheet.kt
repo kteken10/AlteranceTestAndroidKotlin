@@ -17,7 +17,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -38,8 +37,8 @@ import androidx.compose.ui.unit.sp
 import com.example.beelditechtest.domain.model.Equipment
 import com.example.beelditechtest.domain.model.EquipmentStatus
 import com.example.beelditechtest.presentation.viewmodel.EquipmentFormViewModel
-import com.example.beelditechtest.ui.theme.primaryColor
-import com.example.beelditechtest.ui.theme.screenBackground
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.material3.MaterialTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -103,9 +102,9 @@ fun EquipmentFormBottomSheet(
                 isError = state.nameError != null,
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = screenBackground,
-                    unfocusedContainerColor = screenBackground,
-                    errorContainerColor = screenBackground,
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    errorContainerColor = MaterialTheme.colorScheme.surface,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     errorIndicatorColor = Color.Transparent,
@@ -134,9 +133,9 @@ fun EquipmentFormBottomSheet(
                 isError = state.brandError != null,
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = screenBackground,
-                    unfocusedContainerColor = screenBackground,
-                    errorContainerColor = screenBackground,
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    errorContainerColor = MaterialTheme.colorScheme.surface,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     errorIndicatorColor = Color.Transparent,
@@ -165,9 +164,9 @@ fun EquipmentFormBottomSheet(
                 isError = state.modelError != null,
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = screenBackground,
-                    unfocusedContainerColor = screenBackground,
-                    errorContainerColor = screenBackground,
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    errorContainerColor = MaterialTheme.colorScheme.surface,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     errorIndicatorColor = Color.Transparent,
@@ -196,9 +195,9 @@ fun EquipmentFormBottomSheet(
                 isError = state.serialNumberError != null,
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = screenBackground,
-                    unfocusedContainerColor = screenBackground,
-                    errorContainerColor = screenBackground,
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    errorContainerColor = MaterialTheme.colorScheme.surface,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     errorIndicatorColor = Color.Transparent,
@@ -226,8 +225,8 @@ fun EquipmentFormBottomSheet(
                     .clip(RoundedCornerShape(12.dp)),
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
-                    focusedContainerColor = screenBackground,
-                    unfocusedContainerColor = screenBackground,
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                 ),
@@ -261,13 +260,13 @@ fun EquipmentFormBottomSheet(
                             Text(
                                 text = label,
                                 fontSize = 12.sp,
-                                color = if (isSelected) color else Color(0xFF6B7280),
+                                color = if (isSelected) color else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                             )
                         },
                         colors = FilterChipDefaults.filterChipColors(
-                            containerColor = screenBackground,
+                            containerColor = if (isSelected) color.copy(alpha = 0.15f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
                             selectedContainerColor = color.copy(alpha = 0.15f),
-                            labelColor = Color(0xFF6B7280),
+                            labelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                             selectedLabelColor = color,
                         ),
                         border = FilterChipDefaults.filterChipBorder(
@@ -278,6 +277,8 @@ fun EquipmentFormBottomSheet(
                             enabled = true,
                             selected = isSelected,
                         ),
+                        shape = RoundedCornerShape(50),
+                        elevation = FilterChipDefaults.elevatedFilterChipElevation(elevation = 0.dp, pressedElevation = 1.dp),
                     )
                 }
             }
@@ -300,20 +301,17 @@ fun EquipmentFormBottomSheet(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 // Bouton Annuler
-                Button(
+                OutlinedButton(
                     onClick = {
                         viewModel.resetState()
                         onDismiss()
                     },
                     modifier = Modifier.weight(1f),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = screenBackground,
-                        contentColor = Color(0xFF6B7280),
-                    ),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 0.dp,
-                        pressedElevation = 0.dp,
+                    shape = RoundedCornerShape(50),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                        contentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                     ),
                 ) {
                     Text("Annuler")
@@ -325,8 +323,8 @@ fun EquipmentFormBottomSheet(
                     modifier = Modifier.weight(1f),
                     enabled = !state.isLoading,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = primaryColor,
-                        contentColor = Color.Black,
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
                     ),
                     shape = RoundedCornerShape(12.dp),
                 ) {

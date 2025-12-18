@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.beelditechtest.ui.theme.primaryColor
+import androidx.compose.material3.MaterialTheme
 
 @Composable
 fun KpiCard(
@@ -62,7 +62,7 @@ fun KpiCard(
                     painter = icon,
                     contentDescription = null,
                     modifier = Modifier.size(22.dp),
-                    tint = primaryColor,
+                    tint = MaterialTheme.colorScheme.primary,
                 )
             }
 
