@@ -11,25 +11,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
+    primary = primaryColorDark,
     secondary = PurpleGrey80,
     tertiary = Pink80,
-    background = screenBackground,
-    surface = screenBackground,
+    background = screenBackgroundDark,
+    surface = screenBackgroundDark,
+    error = errorDark,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
+    primary = primaryColorLight,
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    background = screenBackground,
-    surface = screenBackground,
+    background = screenBackgroundLight,
+    surface = screenBackgroundLight,
+    error = errorLight,
 )
 
 @Composable
 fun BeeldiTechTestTheme(
-    darkTheme: Boolean = false, // Forcé à false pour tester
-    // Dynamic color is available on Android 12+
+    darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
@@ -38,7 +39,6 @@ fun BeeldiTechTestTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
