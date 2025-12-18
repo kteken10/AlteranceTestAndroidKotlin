@@ -57,7 +57,7 @@ fun EquipmentListTopAppBar(
                     modifier = Modifier
                         .size(42.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surface)
+                        .background(Color.White)
                         .clickable(onClick = onNotificationClick),
                     contentAlignment = Alignment.Center,
                 ) {

@@ -108,7 +108,7 @@ fun EquipmentListScreen(
                             icon = painterResource(id = R.drawable.ic_equipment),
                             modifier = Modifier
                                 .clickable { viewModel.onKpiFilterSelected(KpiFilter.ALL) }
-                                .background(if (state.kpiFilter == KpiFilter.ALL) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else Color.Transparent, RoundedCornerShape(20.dp)),
+                                .background(if (state.kpiFilter == KpiFilter.ALL) MaterialTheme.colorScheme.primary.copy(alpha = 0.22f) else Color.Transparent, RoundedCornerShape(20.dp)),
                         )
                         KpiCard(
                             title = "Conformes",
@@ -116,7 +116,7 @@ fun EquipmentListScreen(
                             icon = painterResource(id = R.drawable.ic_validated),
                             modifier = Modifier
                                 .clickable { viewModel.onKpiFilterSelected(KpiFilter.OK) }
-                                .background(if (state.kpiFilter == KpiFilter.OK) Color(0xFF4CAF50).copy(alpha = 0.1f) else Color.Transparent, RoundedCornerShape(20.dp)),
+                                .background(if (state.kpiFilter == KpiFilter.OK) Color(0xFF4CAF50).copy(alpha = 0.18f) else Color.Transparent, RoundedCornerShape(20.dp)),
                         )
                         KpiCard(
                             title = "À compléter",
@@ -124,7 +124,7 @@ fun EquipmentListScreen(
                             icon = painterResource(id = R.drawable.ic_edit),
                             modifier = Modifier
                                 .clickable { viewModel.onKpiFilterSelected(KpiFilter.TO_COMPLETE) }
-                                .background(if (state.kpiFilter == KpiFilter.TO_COMPLETE) Color(0xFFFF9800).copy(alpha = 0.1f) else Color.Transparent, RoundedCornerShape(20.dp)),
+                                .background(if (state.kpiFilter == KpiFilter.TO_COMPLETE) Color(0xFFFF9800).copy(alpha = 0.18f) else Color.Transparent, RoundedCornerShape(20.dp)),
                         )
                         KpiCard(
                             title = "En défaut",
@@ -132,7 +132,7 @@ fun EquipmentListScreen(
                             icon = painterResource(id = R.drawable.ic_defect),
                             modifier = Modifier
                                 .clickable { viewModel.onKpiFilterSelected(KpiFilter.DEFECT) }
-                                .background(if (state.kpiFilter == KpiFilter.DEFECT) Color(0xFFF44336).copy(alpha = 0.1f) else Color.Transparent, RoundedCornerShape(20.dp)),
+                                .background(if (state.kpiFilter == KpiFilter.DEFECT) Color(0xFFF44336).copy(alpha = 0.18f) else Color.Transparent, RoundedCornerShape(20.dp)),
                         )
                     }
                 }
