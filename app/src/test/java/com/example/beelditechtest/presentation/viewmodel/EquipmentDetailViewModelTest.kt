@@ -33,6 +33,13 @@ class EquipmentDetailViewModelTest {
         brand = "Brand A",
         model = "Model X",
         serialNumber = "SN001",
+        floor = "1",
+        status = com.example.beelditechtest.domain.model.EquipmentStatus.OK,
+        completionRate = 100,
+        defectCount = 0,
+        updatedAt = 123456789L,
+        buildingId = "B1",
+        imagePath = null
     )
 
     @Before
@@ -60,11 +67,16 @@ class EquipmentDetailViewModelTest {
         val viewModel = EquipmentDetailViewModel(getEquipmentByIdUseCase, savedStateHandle)
 
         viewModel.state.test {
-            // Initial loading state
+            // Skip initial default emission
+            awaitItem()
+            // Loading state
             val loadingState = awaitItem()
             assertTrue(loadingState.isLoading)
 
+            // Advance dispatcher before collecting next state
             testDispatcher.scheduler.advanceUntilIdle()
+
+            // Await the next emission after coroutine completes
             val loadedState = awaitItem()
 
             // Then
@@ -87,8 +99,11 @@ class EquipmentDetailViewModelTest {
         val viewModel = EquipmentDetailViewModel(getEquipmentByIdUseCase, savedStateHandle)
 
         viewModel.state.test {
-            // Initial loading state
+            // Skip initial default emission
             awaitItem()
+            // Loading state
+            val loadingState = awaitItem()
+            assertTrue(loadingState.isLoading)
 
             testDispatcher.scheduler.advanceUntilIdle()
             val errorState = awaitItem()
@@ -112,8 +127,11 @@ class EquipmentDetailViewModelTest {
         val viewModel = EquipmentDetailViewModel(getEquipmentByIdUseCase, savedStateHandle)
 
         viewModel.state.test {
-            // Initial loading state
+            // Skip initial default emission
             awaitItem()
+            // Loading state
+            val loadingState = awaitItem()
+            assertTrue(loadingState.isLoading)
 
             testDispatcher.scheduler.advanceUntilIdle()
             val errorState = awaitItem()

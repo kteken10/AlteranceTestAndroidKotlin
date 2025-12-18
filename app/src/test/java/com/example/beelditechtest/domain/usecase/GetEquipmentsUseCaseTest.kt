@@ -31,6 +31,13 @@ class GetEquipmentsUseCaseTest {
                 brand = "Brand A",
                 model = "Model X",
                 serialNumber = "SN001",
+                floor = "1",
+                status = com.example.beelditechtest.domain.model.EquipmentStatus.OK,
+                completionRate = 100,
+                defectCount = 0,
+                updatedAt = 123456789L,
+                buildingId = "B1",
+                imagePath = null
             ),
             Equipment(
                 id = "2",
@@ -38,6 +45,13 @@ class GetEquipmentsUseCaseTest {
                 brand = "Brand B",
                 model = "Model Y",
                 serialNumber = "SN002",
+                floor = "2",
+                status = com.example.beelditechtest.domain.model.EquipmentStatus.TO_COMPLETE,
+                completionRate = 80,
+                defectCount = 1,
+                updatedAt = 123456790L,
+                buildingId = "B2",
+                imagePath = null
             ),
         )
         coEvery { repository.getEquipments() } returns expectedEquipments

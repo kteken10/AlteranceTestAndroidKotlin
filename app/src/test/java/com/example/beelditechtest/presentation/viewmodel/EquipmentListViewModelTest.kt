@@ -3,6 +3,8 @@ package com.example.beelditechtest.presentation.viewmodel
 import app.cash.turbine.test
 import com.example.beelditechtest.domain.model.Equipment
 import com.example.beelditechtest.domain.usecase.GetEquipmentsUseCase
+import com.example.beelditechtest.domain.usecase.GetParkStatsUseCase
+import com.example.beelditechtest.domain.usecase.DeleteEquipmentUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +25,8 @@ import org.junit.Test
 class EquipmentListViewModelTest {
 
     private lateinit var getEquipmentsUseCase: GetEquipmentsUseCase
+    private lateinit var getParkStatsUseCase: GetParkStatsUseCase
+    private lateinit var deleteEquipmentUseCase: DeleteEquipmentUseCase
     private val testDispatcher = StandardTestDispatcher()
 
     private val testEquipments = listOf(
@@ -32,6 +36,13 @@ class EquipmentListViewModelTest {
             brand = "Brand A",
             model = "Model X",
             serialNumber = "SN001",
+            floor = "1",
+            status = com.example.beelditechtest.domain.model.EquipmentStatus.OK,
+            completionRate = 100,
+            defectCount = 0,
+            updatedAt = 123456789L,
+            buildingId = "B1",
+            imagePath = null
         ),
         Equipment(
             id = "2",
@@ -39,6 +50,13 @@ class EquipmentListViewModelTest {
             brand = "Brand B",
             model = "Model Y",
             serialNumber = "SN002",
+            floor = "2",
+            status = com.example.beelditechtest.domain.model.EquipmentStatus.TO_COMPLETE,
+            completionRate = 80,
+            defectCount = 1,
+            updatedAt = 123456790L,
+            buildingId = "B2",
+            imagePath = null
         ),
     )
 
@@ -46,6 +64,8 @@ class EquipmentListViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         getEquipmentsUseCase = mockk()
+        getParkStatsUseCase = mockk(relaxed = true)
+        deleteEquipmentUseCase = mockk(relaxed = true)
     }
 
     @After
@@ -59,19 +79,21 @@ class EquipmentListViewModelTest {
         coEvery { getEquipmentsUseCase() } returns testEquipments
 
         // When
-        val viewModel = EquipmentListViewModel(getEquipmentsUseCase)
+        val viewModel = EquipmentListViewModel(getEquipmentsUseCase, getParkStatsUseCase, deleteEquipmentUseCase)
 
         viewModel.state.test {
-            // Initial state with loading
+            // Skip initial default emission
+            awaitItem()
+            // Loading state
             val loadingState = awaitItem()
             assertTrue(loadingState.isLoading)
 
-            // After loading completes
+            // Advance dispatcher before collecting next state
             testDispatcher.scheduler.advanceUntilIdle()
             val loadedState = awaitItem()
 
             assertFalse(loadedState.isLoading)
-            assertEquals(testEquipments, loadedState.equipments)
+            assertEquals(testEquipments, loadedState.filteredEquipments)
             assertNull(loadedState.error)
 
             cancelAndIgnoreRemainingEvents()
@@ -84,11 +106,14 @@ class EquipmentListViewModelTest {
         coEvery { getEquipmentsUseCase() } throws RuntimeException("Test error")
 
         // When
-        val viewModel = EquipmentListViewModel(getEquipmentsUseCase)
+        val viewModel = EquipmentListViewModel(getEquipmentsUseCase, getParkStatsUseCase, deleteEquipmentUseCase)
 
         viewModel.state.test {
-            // Initial state
+            // Skip initial default emission
             awaitItem()
+            // Loading state
+            val loadingState = awaitItem()
+            assertTrue(loadingState.isLoading)
 
             testDispatcher.scheduler.advanceUntilIdle()
             val errorState = awaitItem()
@@ -96,7 +121,7 @@ class EquipmentListViewModelTest {
             // Then
             assertFalse(errorState.isLoading)
             assertEquals("Test error", errorState.error)
-            assertTrue(errorState.equipments.isEmpty())
+            assertTrue(errorState.filteredEquipments.isEmpty())
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -107,16 +132,16 @@ class EquipmentListViewModelTest {
         // Given
         coEvery { getEquipmentsUseCase() } returns testEquipments
 
-        val viewModel = EquipmentListViewModel(getEquipmentsUseCase)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        // When
-        viewModel.loadEquipments()
+        val viewModel = EquipmentListViewModel(getEquipmentsUseCase, getParkStatsUseCase, deleteEquipmentUseCase)
 
         viewModel.state.test {
+            // Skip initial default emission
+            awaitItem()
+            // Loading state
+            awaitItem()
+            testDispatcher.scheduler.advanceUntilIdle()
             val currentState = awaitItem()
-            assertEquals(testEquipments, currentState.equipments)
-
+            assertEquals(testEquipments, currentState.filteredEquipments)
             cancelAndIgnoreRemainingEvents()
         }
     }
