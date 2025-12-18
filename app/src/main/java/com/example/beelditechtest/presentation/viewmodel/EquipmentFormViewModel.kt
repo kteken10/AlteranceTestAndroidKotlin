@@ -40,23 +40,35 @@ class EquipmentFormViewModel @Inject constructor(
     }
 
     fun onBrandChange(brand: String) {
+        // Limite à 25 caractères
+        val limitedBrand = brand.take(25)
+        val error = validateBrand(limitedBrand)
         _state.value = _state.value.copy(
-            brand = brand,
-            brandError = if (brand.isBlank()) "La marque est requise" else null,
+            brand = limitedBrand,
+            brandError = error,
         )
     }
 
     fun onModelChange(model: String) {
+        // Limite à 50 caractères
+        val limitedModel = model.take(50)
+        val error = validateModel(limitedModel)
         _state.value = _state.value.copy(
-            model = model,
-            modelError = if (model.isBlank()) "Le modèle est requis" else null,
+            model = limitedModel,
+            modelError = error,
         )
     }
 
     fun onSerialNumberChange(serialNumber: String) {
+        // Convertir en majuscule et supprimer les espaces, limiter à 50 caractères
+        val formattedSerial = serialNumber
+            .uppercase()
+            .replace(" ", "")
+            .take(50)
+        val error = validateSerialNumber(formattedSerial)
         _state.value = _state.value.copy(
-            serialNumber = serialNumber,
-            serialNumberError = if (serialNumber.isBlank()) "Le numéro de série est requis" else null,
+            serialNumber = formattedSerial,
+            serialNumberError = error,
         )
     }
 
@@ -71,11 +83,11 @@ class EquipmentFormViewModel @Inject constructor(
     fun onSubmit() {
         val currentState = _state.value
 
-        // Validation
+        // Validation complète
         val nameError = if (currentState.name.isBlank()) "Le nom est requis" else null
-        val brandError = if (currentState.brand.isBlank()) "La marque est requise" else null
-        val modelError = if (currentState.model.isBlank()) "Le modèle est requis" else null
-        val serialNumberError = if (currentState.serialNumber.isBlank()) "Le numéro de série est requis" else null
+        val brandError = validateBrand(currentState.brand)
+        val modelError = validateModel(currentState.model)
+        val serialNumberError = validateSerialNumber(currentState.serialNumber)
 
         if (nameError != null || brandError != null || modelError != null || serialNumberError != null) {
             _state.value = currentState.copy(
@@ -140,5 +152,36 @@ class EquipmentFormViewModel @Inject constructor(
 
     fun resetState() {
         _state.value = EquipmentFormState()
+    }
+
+    // Validation de la marque: commence par majuscule, max 25 caractères
+    private fun validateBrand(brand: String): String? {
+        return when {
+            brand.isBlank() -> "La marque est requise"
+            brand.first().isLowerCase() -> "La marque doit commencer par une majuscule"
+            brand.length > 25 -> "La marque ne doit pas dépasser 25 caractères"
+            else -> null
+        }
+    }
+
+    // Validation du modèle: max 50 caractères
+    private fun validateModel(model: String): String? {
+        return when {
+            model.isBlank() -> "Le modèle est requis"
+            model.length > 50 -> "Le modèle ne doit pas dépasser 50 caractères"
+            else -> null
+        }
+    }
+
+    // Validation du numéro de série: chiffres, lettres, tirets uniquement, majuscules, pas d'espaces, max 50 caractères
+    private fun validateSerialNumber(serialNumber: String): String? {
+        val validPattern = Regex("^[A-Z0-9-]+$")
+        return when {
+            serialNumber.isBlank() -> "Le numéro de série est requis"
+            serialNumber.contains(" ") -> "Le numéro de série ne peut pas contenir d'espaces"
+            !validPattern.matches(serialNumber) -> "Le numéro de série ne peut contenir que des lettres majuscules, chiffres et tirets"
+            serialNumber.length > 50 -> "Le numéro de série ne doit pas dépasser 50 caractères"
+            else -> null
+        }
     }
 }

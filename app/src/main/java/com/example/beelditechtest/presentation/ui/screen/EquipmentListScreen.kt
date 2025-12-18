@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -65,25 +66,16 @@ fun EquipmentListScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
-    Scaffold(
-        topBar = {
-            EquipmentListTopAppBar(
-                userAvatarResId = R.drawable.avatar_user,
-                onAvatarClick = { /* TODO: Navigate to profile */ },
-            )
-        },
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState) { data ->
-                Snackbar(
-                    snackbarData = data,
-                    containerColor = primaryColor,
-                    contentColor = Color.Black,
+    Box(modifier = modifier.fillMaxSize()) {
+        Scaffold(
+            topBar = {
+                EquipmentListTopAppBar(
+                    userAvatarResId = R.drawable.avatar_user,
+                    onAvatarClick = { /* TODO: Navigate to profile */ },
                 )
-            }
-        },
-        containerColor = screenBackground,
-        modifier = modifier,
-    ) { paddingValues ->
+            },
+            containerColor = screenBackground,
+        ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -206,6 +198,21 @@ fun EquipmentListScreen(
                     }
                 }
             }
+        }
+
+        // Snackbar en haut de l'écran avec bordures arrondies
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 80.dp, start = 16.dp, end = 16.dp),
+        ) { data ->
+            Snackbar(
+                snackbarData = data,
+                containerColor = primaryColor,
+                contentColor = Color.Black,
+                shape = RoundedCornerShape(12.dp),
+            )
         }
     }
 

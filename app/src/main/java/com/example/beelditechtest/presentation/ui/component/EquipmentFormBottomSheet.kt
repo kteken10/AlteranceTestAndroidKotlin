@@ -20,8 +20,9 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +30,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,6 +39,7 @@ import com.example.beelditechtest.domain.model.Equipment
 import com.example.beelditechtest.domain.model.EquipmentStatus
 import com.example.beelditechtest.presentation.viewmodel.EquipmentFormViewModel
 import com.example.beelditechtest.ui.theme.primaryColor
+import com.example.beelditechtest.ui.theme.screenBackground
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,69 +92,145 @@ fun EquipmentFormBottomSheet(
             )
 
             // Champ Nom
-            OutlinedTextField(
+            TextField(
                 value = state.name,
                 onValueChange = { viewModel.onNameChange(it) },
-                label = { Text("Nom *") },
-                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("Nom *", color = Color(0xFF9CA3AF)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+                    .clip(RoundedCornerShape(12.dp)),
                 isError = state.nameError != null,
-                supportingText = state.nameError?.let { { Text(it) } },
                 singleLine = true,
-                shape = RoundedCornerShape(12.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = screenBackground,
+                    unfocusedContainerColor = screenBackground,
+                    errorContainerColor = screenBackground,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent,
+                ),
             )
+            state.nameError?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(start = 4.dp, top = 4.dp),
+                )
+            }
 
             Spacer(modifier = Modifier.height(12.dp))
 
             // Champ Marque
-            OutlinedTextField(
+            TextField(
                 value = state.brand,
                 onValueChange = { viewModel.onBrandChange(it) },
-                label = { Text("Marque *") },
-                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("Marque *", color = Color(0xFF9CA3AF)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+                    .clip(RoundedCornerShape(12.dp)),
                 isError = state.brandError != null,
-                supportingText = state.brandError?.let { { Text(it) } },
                 singleLine = true,
-                shape = RoundedCornerShape(12.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = screenBackground,
+                    unfocusedContainerColor = screenBackground,
+                    errorContainerColor = screenBackground,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent,
+                ),
             )
+            state.brandError?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(start = 4.dp, top = 4.dp),
+                )
+            }
 
             Spacer(modifier = Modifier.height(12.dp))
 
             // Champ Modèle
-            OutlinedTextField(
+            TextField(
                 value = state.model,
                 onValueChange = { viewModel.onModelChange(it) },
-                label = { Text("Modèle *") },
-                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("Modèle *", color = Color(0xFF9CA3AF)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+                    .clip(RoundedCornerShape(12.dp)),
                 isError = state.modelError != null,
-                supportingText = state.modelError?.let { { Text(it) } },
                 singleLine = true,
-                shape = RoundedCornerShape(12.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = screenBackground,
+                    unfocusedContainerColor = screenBackground,
+                    errorContainerColor = screenBackground,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent,
+                ),
             )
+            state.modelError?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(start = 4.dp, top = 4.dp),
+                )
+            }
 
             Spacer(modifier = Modifier.height(12.dp))
 
             // Champ Numéro de série
-            OutlinedTextField(
+            TextField(
                 value = state.serialNumber,
                 onValueChange = { viewModel.onSerialNumberChange(it) },
-                label = { Text("Numéro de série *") },
-                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("Numéro de série *", color = Color(0xFF9CA3AF)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+                    .clip(RoundedCornerShape(12.dp)),
                 isError = state.serialNumberError != null,
-                supportingText = state.serialNumberError?.let { { Text(it) } },
                 singleLine = true,
-                shape = RoundedCornerShape(12.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = screenBackground,
+                    unfocusedContainerColor = screenBackground,
+                    errorContainerColor = screenBackground,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    errorIndicatorColor = Color.Transparent,
+                ),
             )
+            state.serialNumberError?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 12.sp,
+                    modifier = Modifier.padding(start = 4.dp, top = 4.dp),
+                )
+            }
 
             Spacer(modifier = Modifier.height(12.dp))
 
             // Champ Étage
-            OutlinedTextField(
+            TextField(
                 value = state.floor,
                 onValueChange = { viewModel.onFloorChange(it) },
-                label = { Text("Étage") },
-                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("Étage", color = Color(0xFF9CA3AF)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+                    .clip(RoundedCornerShape(12.dp)),
                 singleLine = true,
-                shape = RoundedCornerShape(12.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = screenBackground,
+                    unfocusedContainerColor = screenBackground,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                ),
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -173,14 +252,31 @@ fun EquipmentFormBottomSheet(
                         EquipmentStatus.TO_COMPLETE -> "À compléter" to Color(0xFFFF9800)
                         EquipmentStatus.DEFECT -> "En défaut" to Color(0xFFF44336)
                     }
+                    val isSelected = state.status == status
 
                     FilterChip(
-                        selected = state.status == status,
+                        selected = isSelected,
                         onClick = { viewModel.onStatusChange(status) },
-                        label = { Text(label, fontSize = 12.sp) },
+                        label = {
+                            Text(
+                                text = label,
+                                fontSize = 12.sp,
+                                color = if (isSelected) color else Color(0xFF6B7280),
+                            )
+                        },
                         colors = FilterChipDefaults.filterChipColors(
-                            selectedContainerColor = color.copy(alpha = 0.2f),
+                            containerColor = screenBackground,
+                            selectedContainerColor = color.copy(alpha = 0.15f),
+                            labelColor = Color(0xFF6B7280),
                             selectedLabelColor = color,
+                        ),
+                        border = FilterChipDefaults.filterChipBorder(
+                            borderColor = Color.Transparent,
+                            selectedBorderColor = color.copy(alpha = 0.3f),
+                            borderWidth = 0.dp,
+                            selectedBorderWidth = 1.dp,
+                            enabled = true,
+                            selected = isSelected,
                         ),
                     )
                 }
@@ -204,13 +300,21 @@ fun EquipmentFormBottomSheet(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 // Bouton Annuler
-                OutlinedButton(
+                Button(
                     onClick = {
                         viewModel.resetState()
                         onDismiss()
                     },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = screenBackground,
+                        contentColor = Color(0xFF6B7280),
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 0.dp,
+                        pressedElevation = 0.dp,
+                    ),
                 ) {
                     Text("Annuler")
                 }
