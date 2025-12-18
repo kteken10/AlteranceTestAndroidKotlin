@@ -22,7 +22,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme  // ← AJOUTER CET IMPORT
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
@@ -48,9 +48,11 @@ import com.example.beelditechtest.presentation.ui.component.EquipmentFormBottomS
 import com.example.beelditechtest.presentation.ui.component.EquipmentItem
 import com.example.beelditechtest.presentation.ui.component.EquipmentListTopAppBar
 import com.example.beelditechtest.presentation.ui.component.KpiCard
+import com.example.beelditechtest.presentation.ui.component.SearchField
+import com.example.beelditechtest.presentation.viewmodel.EquipmentFormViewModel
 import com.example.beelditechtest.presentation.viewmodel.EquipmentListViewModel
 import com.example.beelditechtest.presentation.viewmodel.KpiFilter
-
+// import supprimé : plus de primaryColor
 import kotlinx.coroutines.launch
 
 @Composable
@@ -104,98 +106,136 @@ fun EquipmentListScreen(
                             title = "Total équipements",
                             value = stats.equipmentStats.total.toString(),
                             icon = painterResource(id = R.drawable.ic_equipment),
+                            // plus de paramètre iconTint, la couleur d'icône est gérée dans KpiCard
                             modifier = Modifier
                                 .clickable { viewModel.onKpiFilterSelected(KpiFilter.ALL) }
-                                .background(if (state.kpiFilter == KpiFilter.ALL) MaterialTheme.colorScheme.primary.copy(alpha = 0.22f) else Color.Transparent, RoundedCornerShape(20.dp)),
+                                .background(
+                                    if (state.kpiFilter == KpiFilter.ALL) MaterialTheme.colorScheme.primary.copy(alpha = 0.22f)
+                                    else Color.Transparent,
+                                    RoundedCornerShape(20.dp)
+                                ),
                         )
                         KpiCard(
                             title = "Conformes",
                             value = stats.equipmentStats.okCount.toString(),
                             icon = painterResource(id = R.drawable.ic_validated),
+                            // plus de paramètre iconTint
                             modifier = Modifier
                                 .clickable { viewModel.onKpiFilterSelected(KpiFilter.OK) }
-                                .background(if (state.kpiFilter == KpiFilter.OK) Color(0xFF4CAF50).copy(alpha = 0.18f) else Color.Transparent, RoundedCornerShape(20.dp)),
+                                .background(
+                                    if (state.kpiFilter == KpiFilter.OK) Color(0xFF4CAF50).copy(alpha = 0.18f) 
+                                    else Color.Transparent, 
+                                    RoundedCornerShape(20.dp)
+                                ),
                         )
                         KpiCard(
                             title = "À compléter",
                             value = stats.equipmentStats.toCompleteCount.toString(),
                             icon = painterResource(id = R.drawable.ic_edit),
+                            // plus de paramètre iconTint
                             modifier = Modifier
                                 .clickable { viewModel.onKpiFilterSelected(KpiFilter.TO_COMPLETE) }
-                                .background(if (state.kpiFilter == KpiFilter.TO_COMPLETE) Color(0xFFFF9800).copy(alpha = 0.18f) else Color.Transparent, RoundedCornerShape(20.dp)),
+                                .background(
+                                    if (state.kpiFilter == KpiFilter.TO_COMPLETE) Color(0xFFFF9800).copy(alpha = 0.18f) 
+                                    else Color.Transparent, 
+                                    RoundedCornerShape(20.dp)
+                                ),
                         )
                         KpiCard(
                             title = "En défaut",
                             value = stats.equipmentStats.defectCount.toString(),
                             icon = painterResource(id = R.drawable.ic_defect),
+                            // plus de paramètre iconTint
                             modifier = Modifier
                                 .clickable { viewModel.onKpiFilterSelected(KpiFilter.DEFECT) }
-                                .background(if (state.kpiFilter == KpiFilter.DEFECT) Color(0xFFF44336).copy(alpha = 0.18f) else Color.Transparent, RoundedCornerShape(20.dp)),
+                                .background(
+                                    if (state.kpiFilter == KpiFilter.DEFECT) Color(0xFFF44336).copy(alpha = 0.18f) 
+                                    else Color.Transparent, 
+                                    RoundedCornerShape(20.dp)
+                                ),
                         )
                     }
                 }
 
-            Spacer(modifier = Modifier.height(8.dp))
-              // Titre Dashboard
-           
-            // Section Équipements avec bouton Ajouter
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = "Équipements",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.SemiBold,
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Section Équipements avec bouton Ajouter
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = "Équipements",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+
+                    // Bouton Ajouter
+                    Box(
+                        modifier = Modifier
+                            .size(42.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary)
+                            .clickable { viewModel.openBottomSheetForCreate() },
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_add),
+                            contentDescription = "Ajouter un équipement",
+                            modifier = Modifier.size(22.dp),
+                            tint = Color(0xFF0F0F0F),
+                        )
+                    }
+                }
+
+                // Champ de recherche
+                SearchField(
+                    value = state.searchQuery,
+                    onValueChange = { viewModel.onSearchQueryChange(it) },
+                    placeholder = "Rechercher un équipement...",
                 )
 
-                // Bouton Ajouter
-                Box(
-                    modifier = Modifier
-                        .size(42.dp)
-                        .clip(CircleShape)
-                        .background(primaryColor)
-                        .clickable { /* TODO: Navigate to add equipment */ },
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_add),
-                        contentDescription = "Ajouter un équipement",
-                        modifier = Modifier.size(22.dp),
-                        tint = Color(0xFF0F0F0F),
-                    )
-                }
-            }
+                Spacer(modifier = Modifier.height(8.dp))
 
-            Box(
-                modifier = Modifier.fillMaxSize(),
-            ) {
-                when {
-                    state.isLoading -> {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center),
-                        )
-                    }
-                    state.error != null -> {
-                        Text(
-                            text = state.error ?: "Erreur",
-                            modifier = Modifier.align(Alignment.Center),
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                    }
-                    else -> {
-                        LazyColumn(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement = Arrangement.spacedBy(10.dp),
-                        ) {
-                            items(state.equipments) { equipment ->
-                                EquipmentItem(
-                                    equipment = equipment,
-                                    onClick = { onEquipmentClick(equipment.id) },
-                                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    when {
+                        state.isLoading -> {
+                            CircularProgressIndicator(
+                                modifier = Modifier.align(Alignment.Center),
+                            )
+                        }
+                        state.error != null -> {
+                            Text(
+                                text = state.error ?: "Erreur",
+                                modifier = Modifier.align(Alignment.Center),
+                                color = MaterialTheme.colorScheme.error,
+                            )
+                        }
+                        state.filteredEquipments.isEmpty() && state.searchQuery.isNotEmpty() -> {
+                            Text(
+                                text = "Aucun équipement trouvé",
+                                modifier = Modifier.align(Alignment.Center),
+                                color = Color.Gray,
+                            )
+                        }
+                        else -> {
+                            LazyColumn(
+                                modifier = Modifier.fillMaxSize(),
+                                verticalArrangement = Arrangement.spacedBy(10.dp),
+                            ) {
+                                items(state.filteredEquipments) { equipment ->
+                                    EquipmentItem(
+                                        equipment = equipment,
+                                        onClick = { onEquipmentClick(equipment.id) },
+                                        onEditClick = { viewModel.openBottomSheetForEdit(equipment) },
+                                        onDeleteClick = { viewModel.showDeleteConfirmation(equipment) },
+                                    )
+                                }
                             }
                         }
                     }
