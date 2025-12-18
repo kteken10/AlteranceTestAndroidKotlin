@@ -99,7 +99,7 @@ fun EquipmentListScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .horizontalScroll(rememberScrollState())
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                            .padding(horizontal = 16.dp),
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
                         KpiCard(
@@ -157,13 +157,13 @@ fun EquipmentListScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // Section Équipements avec bouton Ajouter
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        .padding(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
@@ -191,6 +191,8 @@ fun EquipmentListScreen(
                     }
                 }
 
+                Spacer(modifier = Modifier.height(16.dp))
+
                 // Champ de recherche
                 SearchField(
                     value = state.searchQuery,
@@ -198,7 +200,7 @@ fun EquipmentListScreen(
                     placeholder = "Rechercher un équipement...",
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 Box(
                     modifier = Modifier.fillMaxSize(),

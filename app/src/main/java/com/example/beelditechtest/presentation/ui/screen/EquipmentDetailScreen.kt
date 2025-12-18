@@ -26,7 +26,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme  // ← AJOUTER CET IMPORT
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -142,7 +142,6 @@ private fun EquipmentDetailContent(
     val context = LocalContext.current
     val scrollState = rememberScrollState()
 
-    // Charger l'image depuis les assets
     val imageBitmap = remember(equipment.imagePath) {
         equipment.imagePath?.let { path ->
             try {
@@ -157,159 +156,171 @@ private fun EquipmentDetailContent(
 
     Column(
         modifier = modifier
-            .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+            .verticalScroll(scrollState)
+            .padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
     ) {
-        // Image de l'équipement dans une carte blanche
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        // Image et titre principal
         Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .padding(top = 8.dp),
+            modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(20.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
             colors = CardDefaults.cardColors(containerColor = Color.White),
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(220.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                if (imageBitmap != null) {
-                    Image(
-                        bitmap = imageBitmap,
-                        contentDescription = equipment.name,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(20.dp)),
-                        contentScale = ContentScale.Crop,
-                    )
-                } else {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_equipment),
-                        contentDescription = equipment.name,
-                        modifier = Modifier.size(80.dp),
-                        tint = Color(0xFF6B7280),
-                    )
-                }
-            }
-        }
-
-        // Header Card avec infos principales
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            shape = RoundedCornerShape(20.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
-        ) {
-            Column(
-                modifier = Modifier.padding(20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                // Nom de l'équipement
-                Text(
-                    text = equipment.name,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color(0xFF111827),
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // Status Tag
-                StatusTag(status = equipment.status)
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Barre de progression
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
+            Column {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(220.dp),
+                    contentAlignment = Alignment.Center,
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Text(
-                            text = "Complétion",
-                            fontSize = 12.sp,
-                            color = Color(0xFF6B7280),
+                    if (imageBitmap != null) {
+                        Image(
+                            bitmap = imageBitmap,
+                            contentDescription = equipment.name,
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop,
                         )
-                        Text(
-                            text = "${equipment.completionRate}%",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color(0xFF111827),
+                    } else {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_equipment),
+                            contentDescription = equipment.name,
+                            modifier = Modifier.size(80.dp),
+                            tint = Color(0xFF6B7280),
                         )
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    LinearProgressIndicator(
-                        progress = { equipment.completionRate / 100f },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(8.dp)
-                            .clip(RoundedCornerShape(4.dp)),
-                        color = when {
-                            equipment.completionRate >= 80 -> Color(0xFF4CAF50)
-                            equipment.completionRate >= 50 -> Color(0xFFFF9800)
-                            else -> Color(0xFFF44336)
-                        },
-                        trackColor = Color(0xFFE5E7EB),
-                        strokeCap = StrokeCap.Round,
+                }
+                
+                Column(
+                    modifier = Modifier.padding(20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Text(
+                        text = equipment.name,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF111827),
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    StatusTag(status = equipment.status)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    // Barre de progression
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            Text(
+                                text = "Complétion",
+                                fontSize = 12.sp,
+                                color = Color(0xFF6B7280),
+                            )
+                            Text(
+                                text = "${equipment.completionRate}%",
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color(0xFF111827),
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        LinearProgressIndicator(
+                            progress = { equipment.completionRate / 100f },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(8.dp)
+                                .clip(RoundedCornerShape(4.dp)),
+                            color = when {
+                                equipment.completionRate >= 80 -> Color(0xFF4CAF50)
+                                equipment.completionRate >= 50 -> Color(0xFFFF9800)
+                                else -> Color(0xFFF44336)
+                            },
+                            trackColor = Color(0xFFE5E7EB),
+                            strokeCap = StrokeCap.Round,
+                        )
+                    }
                 }
             }
         }
 
         // Section Informations générales
-        DetailSection(
+        DetailSectionCard(
             title = "Informations générales",
             icon = R.drawable.ic_equipment,
-            modifier = Modifier.padding(horizontal = 16.dp),
         ) {
-            DetailInfoRow(label = "Marque", value = equipment.brand)
-            DetailInfoRow(label = "Modèle", value = equipment.model)
-            DetailInfoRow(label = "N° de série", value = equipment.serialNumber)
-            DetailInfoRow(label = "ID", value = equipment.id, isSecondary = true)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                InfoItem(label = "Marque", value = equipment.brand, modifier = Modifier.weight(1f))
+                InfoItem(label = "Modèle", value = equipment.model, modifier = Modifier.weight(1f))
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                InfoItem(label = "N° de série", value = equipment.serialNumber, modifier = Modifier.weight(1f))
+                InfoItem(label = "ID", value = equipment.id, modifier = Modifier.weight(1f), isSecondary = true)
+            }
         }
 
         // Section Localisation
-        DetailSection(
+        DetailSectionCard(
             title = "Localisation",
             icon = R.drawable.ic_building,
-            modifier = Modifier.padding(horizontal = 16.dp),
         ) {
-            DetailInfoRow(label = "Bâtiment", value = equipment.buildingId)
-            DetailInfoRow(label = "Étage", value = equipment.floor.ifEmpty { "Non renseigné" })
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                InfoItem(
+                    label = "Bâtiment",
+                    value = equipment.buildingId,
+                    modifier = Modifier.weight(1f),
+                )
+                InfoItem(
+                    label = "Étage",
+                    value = equipment.floor.ifEmpty { "Non renseigné" },
+                    modifier = Modifier.weight(1f),
+                )
+            }
         }
 
         // Section État technique
-        DetailSection(
+        DetailSectionCard(
             title = "État technique",
             icon = R.drawable.ic_defect,
-            modifier = Modifier.padding(horizontal = 16.dp),
         ) {
-            DetailInfoRow(
-                label = "Statut",
-                value = when (equipment.status) {
-                    EquipmentStatus.OK -> "Conforme"
-                    EquipmentStatus.TO_COMPLETE -> "À compléter"
-                    EquipmentStatus.DEFECT -> "En défaut"
-                },
-                valueColor = when (equipment.status) {
-                    EquipmentStatus.OK -> Color(0xFF4CAF50)
-                    EquipmentStatus.TO_COMPLETE -> Color(0xFFFF9800)
-                    EquipmentStatus.DEFECT -> Color(0xFFF44336)
-                },
-            )
-            DetailInfoRow(
-                label = "Défauts détectés",
-                value = equipment.defectCount.toString(),
-                valueColor = if (equipment.defectCount > 0) Color(0xFFF44336) else Color(0xFF4CAF50),
-            )
-            DetailInfoRow(
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                InfoItem(
+                    label = "Statut",
+                    value = when (equipment.status) {
+                        EquipmentStatus.OK -> "Conforme"
+                        EquipmentStatus.TO_COMPLETE -> "À compléter"
+                        EquipmentStatus.DEFECT -> "En défaut"
+                    },
+                    valueColor = when (equipment.status) {
+                        EquipmentStatus.OK -> Color(0xFF4CAF50)
+                        EquipmentStatus.TO_COMPLETE -> Color(0xFFFF9800)
+                        EquipmentStatus.DEFECT -> Color(0xFFF44336)
+                    },
+                    modifier = Modifier.weight(1f),
+                )
+                InfoItem(
+                    label = "Défauts détectés",
+                    value = equipment.defectCount.toString(),
+                    valueColor = if (equipment.defectCount > 0) Color(0xFFF44336) else Color(0xFF4CAF50),
+                    modifier = Modifier.weight(1f),
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            InfoItem(
                 label = "Dernière mise à jour",
                 value = formatDate(equipment.updatedAt),
             )
@@ -320,7 +331,7 @@ private fun EquipmentDetailContent(
 }
 
 @Composable
-private fun DetailSection(
+private fun DetailSectionCard(
     title: String,
     icon: Int,
     modifier: Modifier = Modifier,
@@ -328,31 +339,27 @@ private fun DetailSection(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             // Header de section
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .background(Color(0xFFF3F4F6), CircleShape),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Icon(
-                        painter = painterResource(id = icon),
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                        tint = Color(0xFF111827),
-                    )
-                }
+                Icon(
+                    painter = painterResource(id = icon),
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = Color(0xFF6B7280),
+                )
                 Text(
                     text = title,
                     fontSize = 16.sp,
@@ -361,41 +368,39 @@ private fun DetailSection(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
             content()
         }
     }
 }
 
 @Composable
-private fun DetailInfoRow(
+private fun InfoItem(
     label: String,
     value: String,
     modifier: Modifier = Modifier,
     valueColor: Color = Color(0xFF111827),
     isSecondary: Boolean = false,
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         Text(
             text = label,
-            fontSize = 14.sp,
+            fontSize = 12.sp,
             color = Color(0xFF6B7280),
+            fontWeight = FontWeight.Normal,
         )
         Text(
             text = value,
-            fontSize = 14.sp,
-            fontWeight = if (isSecondary) FontWeight.Normal else FontWeight.Medium,
+            fontSize = 16.sp,
+            fontWeight = if (isSecondary) FontWeight.Medium else FontWeight.SemiBold,
             color = if (isSecondary) Color(0xFF9CA3AF) else valueColor,
         )
     }
 }
+
+
 
 private fun formatDate(timestamp: Long): String {
     return try {
