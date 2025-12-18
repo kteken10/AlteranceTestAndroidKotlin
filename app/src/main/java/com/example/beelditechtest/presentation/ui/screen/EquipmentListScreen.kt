@@ -48,8 +48,6 @@ import com.example.beelditechtest.presentation.ui.component.EquipmentFormBottomS
 import com.example.beelditechtest.presentation.ui.component.EquipmentItem
 import com.example.beelditechtest.presentation.ui.component.EquipmentListTopAppBar
 import com.example.beelditechtest.presentation.ui.component.KpiCard
-import com.example.beelditechtest.presentation.ui.component.SearchField
-import com.example.beelditechtest.presentation.viewmodel.EquipmentFormViewModel
 import com.example.beelditechtest.presentation.viewmodel.EquipmentListViewModel
 import com.example.beelditechtest.presentation.viewmodel.KpiFilter
 
@@ -137,81 +135,67 @@ fun EquipmentListScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = "Équipements",
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                    Box(
-                        modifier = Modifier
-                            .size(42.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary)
-                            .clickable { viewModel.openBottomSheetForCreate() },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_add),
-                            contentDescription = "Ajouter un équipement",
-                            modifier = Modifier.size(22.dp),
-                            tint = Color(0xFF0F0F0F),
-                        )
-                    }
-                }
-
-                SearchField(
-                    value = state.searchQuery,
-                    onValueChange = { viewModel.onSearchQueryChange(it) },
-                    placeholder = "Rechercher un équipement...",
+            Spacer(modifier = Modifier.height(8.dp))
+              // Titre Dashboard
+           
+            // Section Équipements avec bouton Ajouter
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "Équipements",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.SemiBold,
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
-
+                // Bouton Ajouter
                 Box(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .size(42.dp)
+                        .clip(CircleShape)
+                        .background(primaryColor)
+                        .clickable { /* TODO: Navigate to add equipment */ },
+                    contentAlignment = Alignment.Center,
                 ) {
-                    when {
-                        state.isLoading -> {
-                            CircularProgressIndicator(
-                                modifier = Modifier.align(Alignment.Center),
-                            )
-                        }
-                        state.error != null -> {
-                            Text(
-                                text = state.error ?: "Erreur",
-                                modifier = Modifier.align(Alignment.Center),
-                                color = MaterialTheme.colorScheme.error,
-                            )
-                        }
-                        state.filteredEquipments.isEmpty() && state.searchQuery.isNotEmpty() -> {
-                            Text(
-                                text = "Aucun équipement trouvé",
-                                modifier = Modifier.align(Alignment.Center),
-                                color = Color.Gray,
-                            )
-                        }
-                        else -> {
-                            LazyColumn(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.spacedBy(10.dp),
-                            ) {
-                                items(state.filteredEquipments) { equipment ->
-                                    EquipmentItem(
-                                        equipment = equipment,
-                                        onClick = { onEquipmentClick(equipment.id) },
-                                        onEditClick = { viewModel.openBottomSheetForEdit(equipment) },
-                                        onDeleteClick = { viewModel.showDeleteConfirmation(equipment) },
-                                    )
-                                }
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_add),
+                        contentDescription = "Ajouter un équipement",
+                        modifier = Modifier.size(22.dp),
+                        tint = Color(0xFF0F0F0F),
+                    )
+                }
+            }
+
+            Box(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                when {
+                    state.isLoading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center),
+                        )
+                    }
+                    state.error != null -> {
+                        Text(
+                            text = state.error ?: "Erreur",
+                            modifier = Modifier.align(Alignment.Center),
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+                    else -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalArrangement = Arrangement.spacedBy(10.dp),
+                        ) {
+                            items(state.equipments) { equipment ->
+                                EquipmentItem(
+                                    equipment = equipment,
+                                    onClick = { onEquipmentClick(equipment.id) },
+                                )
                             }
                         }
                     }
