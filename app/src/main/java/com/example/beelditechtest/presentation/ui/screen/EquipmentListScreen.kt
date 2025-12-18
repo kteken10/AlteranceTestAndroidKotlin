@@ -51,6 +51,7 @@ import com.example.beelditechtest.presentation.ui.component.KpiCard
 import com.example.beelditechtest.presentation.ui.component.SearchField
 import com.example.beelditechtest.presentation.viewmodel.EquipmentFormViewModel
 import com.example.beelditechtest.presentation.viewmodel.EquipmentListViewModel
+import com.example.beelditechtest.presentation.viewmodel.KpiFilter
 
 import kotlinx.coroutines.launch
 
@@ -105,21 +106,33 @@ fun EquipmentListScreen(
                             title = "Total équipements",
                             value = stats.equipmentStats.total.toString(),
                             icon = painterResource(id = R.drawable.ic_equipment),
+                            modifier = Modifier
+                                .clickable { viewModel.onKpiFilterSelected(KpiFilter.ALL) }
+                                .background(if (state.kpiFilter == KpiFilter.ALL) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else Color.Transparent, RoundedCornerShape(20.dp)),
                         )
                         KpiCard(
                             title = "Conformes",
                             value = stats.equipmentStats.okCount.toString(),
                             icon = painterResource(id = R.drawable.ic_validated),
+                            modifier = Modifier
+                                .clickable { viewModel.onKpiFilterSelected(KpiFilter.OK) }
+                                .background(if (state.kpiFilter == KpiFilter.OK) Color(0xFF4CAF50).copy(alpha = 0.1f) else Color.Transparent, RoundedCornerShape(20.dp)),
                         )
                         KpiCard(
                             title = "À compléter",
                             value = stats.equipmentStats.toCompleteCount.toString(),
                             icon = painterResource(id = R.drawable.ic_edit),
+                            modifier = Modifier
+                                .clickable { viewModel.onKpiFilterSelected(KpiFilter.TO_COMPLETE) }
+                                .background(if (state.kpiFilter == KpiFilter.TO_COMPLETE) Color(0xFFFF9800).copy(alpha = 0.1f) else Color.Transparent, RoundedCornerShape(20.dp)),
                         )
                         KpiCard(
                             title = "En défaut",
                             value = stats.equipmentStats.defectCount.toString(),
                             icon = painterResource(id = R.drawable.ic_defect),
+                            modifier = Modifier
+                                .clickable { viewModel.onKpiFilterSelected(KpiFilter.DEFECT) }
+                                .background(if (state.kpiFilter == KpiFilter.DEFECT) Color(0xFFF44336).copy(alpha = 0.1f) else Color.Transparent, RoundedCornerShape(20.dp)),
                         )
                     }
                 }

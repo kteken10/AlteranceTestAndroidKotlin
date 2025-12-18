@@ -14,4 +14,9 @@ data class EquipmentListState(
     val selectedEquipment: Equipment? = null,
     val showDeleteConfirmation: Boolean = false,
     val equipmentToDelete: Equipment? = null,
+    val kpiFilter: KpiFilter = KpiFilter.ALL,
 )
+
+enum class KpiFilter {
+    ALL, OK, TO_COMPLETE, DEFECT
+}

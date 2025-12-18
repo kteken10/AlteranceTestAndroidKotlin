@@ -1,6 +1,7 @@
 package com.example.beelditechtest.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.example.beelditechtest.presentation.viewmodel.KpiFilter
 import androidx.lifecycle.viewModelScope
 import com.example.beelditechtest.domain.model.Equipment
 import com.example.beelditechtest.domain.usecase.DeleteEquipmentUseCase
@@ -49,10 +50,19 @@ class EquipmentListViewModel @Inject constructor(
         }
     }
 
+
     fun onSearchQueryChange(query: String) {
         _state.value = _state.value.copy(
             searchQuery = query,
-            filteredEquipments = filterEquipments(_state.value.equipments, query),
+            filteredEquipments = filterEquipments(_state.value.equipments, query, _state.value.kpiFilter),
+        )
+    }
+
+    fun onKpiFilterSelected(filter: KpiFilter) {
+        val newFilter = if (_state.value.kpiFilter == filter) KpiFilter.ALL else filter
+        _state.value = _state.value.copy(
+            kpiFilter = newFilter,
+            filteredEquipments = filterEquipments(_state.value.equipments, _state.value.searchQuery, newFilter),
         )
     }
 
@@ -122,15 +132,23 @@ class EquipmentListViewModel @Inject constructor(
     private fun filterEquipments(
         equipments: List<Equipment>,
         query: String,
+        kpiFilter: KpiFilter = KpiFilter.ALL
     ): List<Equipment> {
-        if (query.isBlank()) return equipments
         val lowerQuery = query.lowercase().trim()
         return equipments.filter { equipment ->
-            equipment.name.lowercase().contains(lowerQuery) ||
+            val matchesQuery = lowerQuery.isBlank() ||
+                equipment.name.lowercase().contains(lowerQuery) ||
                 equipment.brand.lowercase().contains(lowerQuery) ||
                 equipment.model.lowercase().contains(lowerQuery) ||
                 equipment.serialNumber.lowercase().contains(lowerQuery) ||
                 equipment.floor.lowercase().contains(lowerQuery)
+            val matchesKpi = when (kpiFilter) {
+                KpiFilter.ALL -> true
+                KpiFilter.OK -> equipment.status == com.example.beelditechtest.domain.model.EquipmentStatus.OK
+                KpiFilter.TO_COMPLETE -> equipment.status == com.example.beelditechtest.domain.model.EquipmentStatus.TO_COMPLETE
+                KpiFilter.DEFECT -> equipment.status == com.example.beelditechtest.domain.model.EquipmentStatus.DEFECT
+            }
+            matchesQuery && matchesKpi
         }
     }
 }
